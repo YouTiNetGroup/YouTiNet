@@ -1,8 +1,12 @@
 package com.youti.api.controller;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +16,7 @@ import com.youti.api.service.DemoService;
 
 @RestController
 @RequestMapping("/demo")
+@CrossOrigin
 public class DemoController {
 	@Resource
     private DemoService demoService;
@@ -62,21 +67,13 @@ public class DemoController {
 		return "delete ok";
 	}
 	
-	@RequestMapping("/update")
-	public String update(int id) {
-		demoService.update(id);
-		return "update ok";
-	}
-	
-	
 	/**
 	 * 4.json
 	 * @RequestBody 接收Json格式的数据需要加这个注解。该注解不能接收URL、Form表单传参
 	 * */
-    /*@RequestMapping(value = "/jsonData", method = RequestMethod.POST)
-    public String jsonData(@RequestBody TestModel tm){
-        String result = "receive name = "+tm.getName()+" age = "+tm.getAge();
-        System.out.println(result);
-        return result;
-    }*/
+	@RequestMapping("/update")
+	public String update(@RequestBody Map<String, String> data) {
+		demoService.update(Integer.parseInt(data.get("id")));
+		return "update ok";
+	}
 }

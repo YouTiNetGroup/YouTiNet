@@ -3,6 +3,7 @@
 SpringBoot + Vue 前后端分离的网站
 
 一、运行前准备工作
+
 1、安装：
 Node.js、
 VS Code、
@@ -12,6 +13,7 @@ JDK8、
 Git
 
 二、运行方法
+
 1、在本地的文件夹中右击鼠标，弹出的选项中选择Git Bash Here，打开Git窗口，输入下面的命令将代码clone到本地：
 git clone https://github.com/zxm3811/YouTiNet.git
 
@@ -38,6 +40,7 @@ npm run dev
 项目运行起来后，会自动打开浏览器，然后即可运行。点击上传文件，上传成功后即可在“youti-api”下的files文件夹里看到刚才上传的文件。
 
 三、Git工作流程
+
 1、首先，master分支上不允许直接进行开发，即不能从master上checkout新分支，也不能把master分支merge到其他分支。
 
 2、dev分支是用来进行开发的主分支，也不能直接在dev上进行开发。

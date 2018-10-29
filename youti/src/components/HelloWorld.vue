@@ -74,7 +74,7 @@
     padding: 0 40px;
     margin: 0;
     display: inline-block;
-    appearance: none;
+    -webkit-appearance: none;
     cursor: pointer;
     border: none;
     -webkit-box-sizing: border-box;

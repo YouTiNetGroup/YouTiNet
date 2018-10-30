@@ -1,8 +1,9 @@
-# YouTiNet
+# YouTiNet （优题网）
 
 SpringBoot + Vue 前后端分离的网站
 
 一、运行前准备工作
+
 1、安装：
 Node.js、
 VS Code、
@@ -12,6 +13,7 @@ JDK8、
 Git
 
 二、运行方法
+
 1、在本地的文件夹中右击鼠标，弹出的选项中选择Git Bash Here，打开Git窗口，输入下面的命令将代码clone到本地：
 git clone https://github.com/zxm3811/YouTiNet.git
 
@@ -36,3 +38,31 @@ cnpm install
 npm run dev
 
 项目运行起来后，会自动打开浏览器，然后即可运行。点击上传文件，上传成功后即可在“youti-api”下的files文件夹里看到刚才上传的文件。
+
+三、Git工作流程
+
+1、首先，master分支上不允许直接进行开发，即不能从master上checkout新分支，也不能把master分支merge到其他分支。
+
+2、dev分支是用来进行开发的主分支，也不能直接在dev上进行开发。
+
+3、每个人在进行一个新的任务之前，先在dev分支上，使用 git checkout -b 分支名 来创建一个新分支，然后 git checkout 分支名 切换到新分支，用于开发。开发完成后，直接在工程目录下使用以下命令：
+
+git add .    //添加整个工程目录
+
+git commit -m '备注'    //将修改提交到本地仓库
+
+git push origin 当前分支名   //将本地仓库的修改push到远端的Github
+
+
+在使用push的时候，可能会遇到提示需要git pull的情况，这是因为远端的代码比本地的代码要新，所以需要使用git pull origin 分支名 来将远端的代码pull到本地，然后才能进行push。
+
+同样，在pull的时候，可能会遇到提示Automerge failed的提示，因为远端的代码和本地产生了冲突，需要解决冲突之后，再重新执行git add .、git commit -m '备注'、git push origin 分支名 等操作才行。
+
+注意：日常开发时创建新分支之前记得先在dev上执行git pull，拉取最新的代码再进行后续操作，减少发生冲突。
+
+
+4、在把更改push到Github后，可以在Github上的项目仓库里点击pull request，可以看到“Compare & pull request”，点进去，即可Open一个pull request，选择base为dev（即你要合并的分支），compare为当前分支，然后为pull request添加名字，以及备注，然后点击create pull request，即可创建一个新的pull request。
+
+创建pull request以后，其他人可以对你写的代码进行代码评审（code review），并提出问题和意见。当别人认为你的代码没有问题，可以合并的时候，会给你一个Approve，收到别人的Approve之后，就可以把当前的这个pull request合并（Merge）了。
+
+同样，记得养成好习惯，经常看看有没有pull request，给别人的代码进行code review，也能知道别人做了什么，可以对项目更加了解。

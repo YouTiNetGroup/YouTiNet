@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50051
 File Encoding         : 65001
 
-Date: 2018-11-04 21:49:14
+Date: 2018-11-06 09:39:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -116,7 +116,7 @@ CREATE TABLE `test_paper` (
   `subject_id` int(12) unsigned NOT NULL COMMENT '学科id',
   `title` varchar(255) default NULL COMMENT '试卷标题',
   `total_score` int(4) default NULL COMMENT '总分值',
-  `difficulity_degree` double(3,2) default NULL,
+  `difficulity_degree` enum('5','4','3','2','1') default NULL COMMENT '试卷总体难度(1~5)',
   `semester` int(1) default NULL COMMENT '学期',
   `school_year` int(4) default NULL COMMENT '学年',
   PRIMARY KEY  (`test_paper_id`),

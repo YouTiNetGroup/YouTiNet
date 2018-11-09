@@ -9,13 +9,13 @@
         </div>
       </div>
       <div class="body">
-        <div class="account_container">
+        <div class="name_container">
           <div class="account_icon">
             <svg id="account-icon">
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-login-account" />
             </svg>
           </div>
-          帐号：<input class="account" v-model="userAccount" type="search" placeholder="请输入帐号" @keyup.enter="checkLogin" />
+          帐号：<input class="name" v-model="userAccount" type="search" placeholder="请输入帐号" @keyup.enter="checkLogin" />
         </div>
         <div v-show="showAccountNullError" class="error_prompt">帐号不能为空!</div>
         <div class="password_container">
@@ -27,10 +27,14 @@
           密码：<input class="password" v-model="password" type="search" placeholder="请输入密码" @keyup.enter="checkLogin" />
         </div>
         <div v-show="showPswNullError" class="error_prompt">密码不能为空!</div>
-        <div class="login_text" @click="gotoRegister">没有帐号? 立即去注册！</div>
+        <div class="password_container">
+          确认密码：<input class="password" v-model="confirmPsw" type="search" placeholder="请再次输入密码" @keyup.enter="checkRegister" />
+        </div>
+        <div v-show="showConfirmPwsError" class="error_prompt">与第一次输入的密码不一致!</div>
+        <div class="login_text" @click="gotoLogin">已有帐号? 立即去登录!</div>
       </div>
-      <div class="foot" @click="checkLogin">
-        <div class="commit">登录</div>
+      <div class="foot" @click="checkRegister">
+        <div class="commit">注册</div>
       </div>
     </div>
   </div>
@@ -44,8 +48,11 @@ export default {
     return {
       userAccount: null,
       password: null,
+      confirmPsw: null,
       showAccountNullError: false,
       showPswNullError: false,
+      showConfirmPwsError: false
+
     };
   },
 
@@ -59,15 +66,22 @@ export default {
       if(this.password) {
         this.showPswNullError = false;
       }
+    },
+    confirmPsw() {
+      if(this.confirmPsw && this.confirmPsw !== this.password) {
+        this.showConfirmPwsError = true;
+      } else {
+        this.showConfirmPwsError = false;
+      }
     }
   },
 
   methods: {
-    gotoRegister() {
-      this.$router.push("/register");
+    gotoLogin() {
+      this.$router.push("/login");
     },
 
-    async checkLogin() {
+    async checkRegister() {
       if(!this.userAccount) {
         this.showAccountNullError = true;
         return;
@@ -76,14 +90,18 @@ export default {
         this.showPswNullError = true;
         return;
       }
-      let userInfo = await AccountService.userlogin({
+      if(!this.confirmPsw || this.confirmPsw !== this.password) {
+        this.showConfirmPwsError = true;
+        return;
+      }
+      let userInfo = await AccountService.userRegister({
         account: this.userAccount,
         password: this.password
       });
       if(userInfo) {
         this.$router.push("/home");
       } else {
-        this.$toast.text("帐号或密码错误");
+        this.$toast.text("该帐号已注册");
       }
     }
   }
@@ -124,12 +142,13 @@ export default {
     }
 
     .body {
+      position: relative;
       margin-top: 0.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
 
-      .account_container {
+      .name_container {
         font-size: 0.2rem;
         display: flex;
         justify-content: space-between;
@@ -147,7 +166,7 @@ export default {
           }
         }
 
-        .account {
+        .name {
           width: 3.2rem;
           height: 0.3rem;
           padding: 0 0.06rem;

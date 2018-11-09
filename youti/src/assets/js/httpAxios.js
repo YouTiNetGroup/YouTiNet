@@ -8,7 +8,7 @@ import {
 } from "src/service/account";
 import {
   router
-} from 'src/router'
+} from 'src/router/index'
 import {
   vueInstance
 } from 'src/main'
@@ -20,21 +20,12 @@ import {
 } from 'src/constant/common'
 import NProgress from 'nprogress'
 
-var buildConfig = require('../../../build/build.config.js')
-
-
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.headers.common['User-Agent-QS'] = 'QSXT';
+axios.defaults.headers.common['User-Agent-QS'] = 'YOUTINET';
 
-export const request = (url = '', data = {}, method = 'POST', version) => {
-  if (version) {
-    url = buildConfig.apiContext + version + url;
-  } else {
-    url = buildConfig.apiContext + buildConfig.apiVersion + url;
-  }
-
+export const request = (url = '', data = {}, method = 'POST') => {
   let config = {
-    url: url,
+    url: "http://localhost:8082" + url,
     data: data,
     method: method
   };

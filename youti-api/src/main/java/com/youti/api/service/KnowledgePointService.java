@@ -19,12 +19,21 @@ public class KnowledgePointService {
 	private KnowledgePointRepository knowledgePointRepository;
 	
 	/**
-	 * 新增单条知识点
+	 * 新增/更新单条知识点
 	 * @param KnowledgePointBean
 	 * */
 	@Transactional
 	public void save(KnowledgePointBean knowledgePointBean) {
 		knowledgePointRepository.save(knowledgePointBean);
+	}
+	
+	/**
+	 * 新增/更新多条知识点
+	 * @param List<KnowledgePointBean>
+	 * */
+	@Transactional
+	public void saveAll(List<KnowledgePointBean> list) {
+		knowledgePointRepository.saveAll(list);
 	}
 	
 	/**
@@ -37,13 +46,33 @@ public class KnowledgePointService {
 	}
 	
 	/**
-	 * 根据id修改知识点所属学科
-	 * @param id,subjectid
+	 * 删除多个知识点
+	 * @param List<KnowledgePointBean>
 	 * */
 	@Transactional
-	public void updateSubjectById(int id, int subjectid) {
+	public void deleteAllList(List<KnowledgePointBean> list) {
+		knowledgePointRepository.deleteInBatch(list);
+	}
+	
+	/**
+	 * 根据id修改知识点所属学科id
+	 * @param id,subject_id
+	 * */
+	@Transactional
+	public void updateSubjectById(int id, int subject_id) {
 		Optional<KnowledgePointBean> sessionKnowledgePoint= knowledgePointRepository.findById(id);
-		sessionKnowledgePoint.get().setSubject_id(subjectid);
+		sessionKnowledgePoint.get().setSubject_id(subject_id);
+		knowledgePointRepository.save(sessionKnowledgePoint.get());
+	}
+	
+	/**
+	 * 根据id修改知识点
+	 * @param id,knowledgePoint
+	 * */
+	@Transactional
+	public void updateKnowledgePointById(int id,String knowledgePoint) {
+		Optional<KnowledgePointBean> sessionKnowledgePoint= knowledgePointRepository.findById(id);
+		sessionKnowledgePoint.get().setKnowledge_point(knowledgePoint);
 		knowledgePointRepository.save(sessionKnowledgePoint.get());
 	}
 	

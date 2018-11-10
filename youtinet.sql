@@ -10,16 +10,16 @@ Target Server Type    : MYSQL
 Target Server Version : 50051
 File Encoding         : 65001
 
-Date: 2018-11-06 09:39:47
+Date: 2018-11-10 20:46:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for accout
+-- Table structure for account
 -- ----------------------------
-DROP TABLE IF EXISTS `accout`;
-CREATE TABLE `accout` (
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
   `account_id` varchar(12) NOT NULL COMMENT '账号',
   `password` varchar(16) NOT NULL COMMENT '密码',
   `privilege` enum('user','admin') NOT NULL default 'user' COMMENT '角色（用户，管理员）',
@@ -27,9 +27,26 @@ CREATE TABLE `accout` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of accout
+-- Records of account
 -- ----------------------------
-INSERT INTO `accout` VALUES ('admin', 'root', 'admin');
+INSERT INTO `account` VALUES ('admin', 'root', 'admin');
+INSERT INTO `account` VALUES ('admin2', '123', 'admin');
+
+-- ----------------------------
+-- Table structure for demo
+-- ----------------------------
+DROP TABLE IF EXISTS `demo`;
+CREATE TABLE `demo` (
+  `id` int(11) NOT NULL,
+  `content` varchar(255) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of demo
+-- ----------------------------
+INSERT INTO `demo` VALUES ('1', 'change');
+INSERT INTO `demo` VALUES ('2', 'b');
 
 -- ----------------------------
 -- Table structure for knowledge_point
@@ -122,7 +139,7 @@ CREATE TABLE `test_paper` (
   PRIMARY KEY  (`test_paper_id`),
   KEY `creator_id` (`creator_id`),
   KEY `subject_id` (`subject_id`),
-  CONSTRAINT `test_paper_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `accout` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `test_paper_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `account` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `test_paper_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -135,13 +152,15 @@ CREATE TABLE `test_paper` (
 -- ----------------------------
 DROP TABLE IF EXISTS `test_paper_contain`;
 CREATE TABLE `test_paper_contain` (
+  `id` int(12) NOT NULL,
   `question_id` int(12) unsigned NOT NULL COMMENT '试题id',
   `test_paper_id` int(12) unsigned NOT NULL COMMENT '试卷id',
   `set_score` int(2) default NULL COMMENT '调整分值，默认null则取问题原本分值',
+  PRIMARY KEY  (`id`),
   KEY `question_id` (`question_id`),
   KEY `test_paper_id` (`test_paper_id`),
-  CONSTRAINT `test_paper_contain_ibfk_2` FOREIGN KEY (`test_paper_id`) REFERENCES `test_paper` (`test_paper_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `test_paper_contain_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`question_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `test_paper_contain_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`question_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `test_paper_contain_ibfk_2` FOREIGN KEY (`test_paper_id`) REFERENCES `test_paper` (`test_paper_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------

@@ -19,7 +19,7 @@ public class AccountService {
     private AccountRepository accountRepository;
 	
 	/**
-	 * 新增单个账号
+	 * 新增/更新单个账号
 	 * @param AccountBean
 	 * */
 	@Transactional
@@ -28,12 +28,30 @@ public class AccountService {
     }
 	
 	/**
+	 * 新增/更新多个账号
+	 * @param List<AccountBean>
+	 * */
+	public void saveAllList(List<AccountBean> list) {
+		accountRepository.saveAll(list);
+	}
+	
+	
+	/**
 	 * 根据id删除账号
 	 * @param id
 	 * */
 	@Transactional
 	public void deleteById(String id) {
 		accountRepository.deleteById(id);
+	}
+	
+	/**
+	 * 删除多个账号
+	 * @param List<AccountBean>
+	 * */
+	@Transactional
+	public void deleteAllList(List<AccountBean> list) {
+		accountRepository.deleteInBatch(list);
 	}
 	
 	/**

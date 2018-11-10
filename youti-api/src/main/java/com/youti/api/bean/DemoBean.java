@@ -2,6 +2,7 @@ package com.youti.api.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,7 +10,7 @@ import javax.persistence.Table;
 @Table(name = "demo")
 public class DemoBean {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String content;
 	

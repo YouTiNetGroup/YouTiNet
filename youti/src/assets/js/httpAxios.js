@@ -20,8 +20,7 @@ import {
 } from 'src/constant/common'
 import NProgress from 'nprogress'
 
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.headers.common['User-Agent-QS'] = 'YOUTINET';
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
 
 export const request = (url = '', data = {}, method = 'POST') => {
   let config = {
@@ -57,42 +56,6 @@ axios.interceptors.response.use(response => {
   return response
 })
 
-
-// http request 拦截器
-axios.interceptors.request.use(
-  (config) => {
-    if (config.url.indexOf('createAnonymous') == -1) {
-      let token = store.getters['auth/token'];
-      let anonymousToken = store.getters['device/anonymousToken']
-      config.headers['Authorization-QS'] = token || anonymousToken;
-    }
-
-    let fingerprint = store.getters['device/fingerprint'];
-    if (fingerprint) {
-      config.headers['DeviceIdentifier-QS'] = fingerprint;
-    }
-
-    let deviceInfo = {
-      netType: NET_TYPE.WIFI,
-      appType: APP_TYPE.QSXT,
-      clientType: CLIENT_TYPE.MSITE,
-      deviceName: store.getters['device/deviceName'],
-      osVersion: store.getters['device/os'],
-      appVersion: store.getters['device/appVersion'],
-      imei: "",
-      mac: fingerprint,
-      idfa: ""
-    };
-
-    config.headers['Device-Info-QS'] = JSON.stringify(deviceInfo);
-
-    return config;
-  },
-  (err) => {
-    return Promise.reject(err);
-  }
-);
-
 // http response 拦截器
 axios.interceptors.response.use(
   (response) => {
@@ -109,7 +72,6 @@ axios.interceptors.response.use(
     if (error.response) {
       if (error.response.status === 401) {
         if (AccountService.hasLogin()) {
-          showAlert(parseInt(error.response.headers['authorization-qs-code']));
           AccountService.logout();
           router.push('/login');
         } else {

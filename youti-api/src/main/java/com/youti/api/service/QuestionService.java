@@ -1,12 +1,16 @@
 package com.youti.api.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.youti.api.bean.KnowledgePointBean;
 import com.youti.api.bean.QuestionBean;
 import com.youti.api.repository.QuestionRepository;
 
@@ -22,6 +26,7 @@ public class QuestionService {
 	@Transactional
 	public void save(QuestionBean questionBean) {
 		//TODO
+		questionRepository.save(questionBean);
 	}
 	
 	/**
@@ -31,6 +36,7 @@ public class QuestionService {
 	@Transactional
 	public void saveAll(List<QuestionBean> list) {
 		//TODO
+		questionRepository.saveAll(list);
 	}
 	
 	/**
@@ -40,6 +46,7 @@ public class QuestionService {
 	@Transactional
 	public void deleteById(int id) {
 		//TODO
+		questionRepository.deleteById(id);
 	}
 	
 	/**
@@ -49,6 +56,7 @@ public class QuestionService {
 	@Transactional
 	public void deleteAllList(List<QuestionBean> list) {
 		//TODO
+		questionRepository.deleteInBatch(list);
 	}
 	
 	/**
@@ -58,6 +66,17 @@ public class QuestionService {
 	@Transactional
 	public void deleteBySubjectId(int subject_id) {
 		//TODO
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getSubject_id() == subject_id) {
+				list.add(temp);
+			}
+		}
+		questionRepository.deleteInBatch(list);
 	}
 	
 	/**
@@ -67,6 +86,17 @@ public class QuestionService {
 	@Transactional
 	public void deleteByKnowledgePointId(int knowledge_point_id) {
 		//TODO
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getKnowledge_point_id() == knowledge_point_id) {
+				list.add(temp);
+			}
+		}
+		questionRepository.deleteInBatch(list);
 	}
 	
 	/**
@@ -76,6 +106,17 @@ public class QuestionService {
 	@Transactional
 	public void deleteByTypeId(int type_id) {
 		//TODO
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getType_id() == type_id) {
+				list.add(temp);
+			}
+		}
+		questionRepository.deleteInBatch(list);
 	}
 	
 	/**
@@ -85,6 +126,9 @@ public class QuestionService {
 	@Transactional
 	public void updateContentById(int id,String content) {
 		//TODO
+		Optional<QuestionBean> sessionquestion= questionRepository.findById(id);
+		sessionquestion.get().setContent(content);
+		questionRepository.save(sessionquestion.get());
 	}
 	
 	/**
@@ -94,6 +138,9 @@ public class QuestionService {
 	@Transactional
 	public void updateAnswerById(int id,String answer) {
 		//TODO
+		Optional<QuestionBean> sessionquestion= questionRepository.findById(id);
+		sessionquestion.get().setAnswer(answer);
+		questionRepository.save(sessionquestion.get());
 	}
 	
 	/**
@@ -103,6 +150,9 @@ public class QuestionService {
 	@Transactional
 	public void updateScoreById(int id,int score) {
 		//TODO
+		Optional<QuestionBean> sessionquestion= questionRepository.findById(id);
+		sessionquestion.get().setScore(score);
+		questionRepository.save(sessionquestion.get());
 	}
 	
 	/**
@@ -112,6 +162,9 @@ public class QuestionService {
 	@Transactional
 	public void updateDifficulityDegreeById(int id,String difficulity_degree) {
 		//TODO
+		Optional<QuestionBean> sessionquestion= questionRepository.findById(id);
+		sessionquestion.get().setDifficulity_degree(difficulity_degree);
+		questionRepository.save(sessionquestion.get());
 	}
 	
 	/**
@@ -121,6 +174,9 @@ public class QuestionService {
 	@Transactional
 	public void updateTypeById(int id,int type_id) {
 		//TODO
+		Optional<QuestionBean> sessionquestion= questionRepository.findById(id);
+		sessionquestion.get().setType_id(type_id);
+		questionRepository.save(sessionquestion.get());
 	}
 	
 	/**
@@ -130,6 +186,9 @@ public class QuestionService {
 	@Transactional
 	public void updateKnowledgePointById(int id,int knowledge_point_id) {
 		//TODO
+		Optional<QuestionBean> sessionquestion= questionRepository.findById(id);
+		sessionquestion.get().setKnowledge_point_id(knowledge_point_id);
+		questionRepository.save(sessionquestion.get());
 	}
 	
 	/**
@@ -139,6 +198,9 @@ public class QuestionService {
 	@Transactional
 	public void updateSubjectById(int id,int subject_id) {
 		//TODO
+		Optional<QuestionBean> sessionquestion= questionRepository.findById(id);
+		sessionquestion.get().setSubject_id(subject_id);
+		questionRepository.save(sessionquestion.get());
 	}
 	
 	/**
@@ -148,7 +210,7 @@ public class QuestionService {
 	@Transactional
 	public QuestionBean findById(int id) {
 		//TODO
-		return null;
+		return questionRepository.findById(id).get();
 	}
 	
 
@@ -158,7 +220,7 @@ public class QuestionService {
 	@Transactional
 	public List<QuestionBean> findAll() {
 		//TODO
-		return null;
+		return questionRepository.findAll();
 	}
 	
 
@@ -169,8 +231,19 @@ public class QuestionService {
 	@Transactional
 	public List<QuestionBean> findByTypeId(int type_id) {
 		//TODO
-		return null;
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getType_id() == type_id) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
+
 	
 	/**
 	 * 根据试题学科id查找试题
@@ -179,7 +252,17 @@ public class QuestionService {
 	@Transactional
 	public List<QuestionBean> findBySubjectId(int subject_id) {
 		//TODO
-		return null;
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getSubject_id() == subject_id) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
 	
 	/**
@@ -189,7 +272,17 @@ public class QuestionService {
 	@Transactional
 	public List<QuestionBean> findByKnowledgePointId(int knowledge_point_id) {
 		//TODO
-		return null;
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getKnowledge_point_id() == knowledge_point_id) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
 	
 	/**
@@ -199,7 +292,17 @@ public class QuestionService {
 	@Transactional
 	public List<QuestionBean> findByScore(int score) {
 		//TODO
-		return null;
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getScore() == score) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
 	
 	/**
@@ -209,18 +312,38 @@ public class QuestionService {
 	@Transactional
 	public List<QuestionBean> findByDifficulityDegree(String difficulity_degree) {
 		//TODO
-		return null;
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getDifficulity_degree() == difficulity_degree) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
 	
 	/**
 	 * 根据组合条件查找试题
-	 * @param type_id,subject_id,knowledge_id,score,difficulity_degree
+	 * @param type_id,subject_id,knowledge_point_id,score,difficulity_degree
 	 * */
 	@Transactional
 	public List<QuestionBean> find(int type_id,int subject_id,
-			int knowledge_id,int score,String difficulity_degree) {
+			int knowledge_point_id,int score,String difficulity_degree) {
 		//TODO
-		return null;
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getType_id() == type_id && temp.getSubject_id() == subject_id && temp.getKnowledge_point_id() == knowledge_point_id && temp.getScore() == score && temp.getDifficulity_degree() == difficulity_degree) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
 	
 }

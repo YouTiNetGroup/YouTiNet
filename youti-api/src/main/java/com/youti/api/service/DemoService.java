@@ -1,5 +1,6 @@
 package com.youti.api.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Resource;
@@ -46,7 +47,7 @@ public class DemoService {
 		*
 		* @return
 		*/
-		public Iterable<DemoBean> getAll(){
+		public List<DemoBean> getAll(){
 			return demoRepository.findAll();
 		}
 

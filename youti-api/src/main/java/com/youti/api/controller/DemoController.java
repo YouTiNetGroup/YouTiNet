@@ -1,5 +1,6 @@
 package com.youti.api.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -54,7 +55,7 @@ public class DemoController {
 	//在方法上加上@ResponseBody注解，返回json格式的数据
 	@RequestMapping("/getAll")
 	@ResponseBody
-	public Iterable<DemoBean> getAll(){
+	public List<DemoBean> getAll(){
 		return demoService.getAll();
 	}
 	
@@ -65,6 +66,11 @@ public class DemoController {
 	public String deleteById(@PathVariable int id) {
 		demoService.deleteById(id);
 		return "delete ok";
+	}
+	@RequestMapping(value = "/update1/{id}")
+	public String update(@PathVariable int id) {
+		demoService.update(id);
+		return "update ok";
 	}
 	
 	/**

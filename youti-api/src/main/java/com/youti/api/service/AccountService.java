@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +57,39 @@ public class AccountService {
 	}
 	
 	/**
+	 * 根据id修改昵称
+	 * @param id, name
+	 * */
+	@Transactional
+	public void updateNameById(String id, String name) {
+		Optional<AccountBean> sessionAccount = accountRepository.findById(id);
+		sessionAccount.get().setName(name);
+		accountRepository.save(sessionAccount.get());
+	}
+	
+	/**
+	 * 根据id修改email
+	 * @param id, email
+	 * */
+	@Transactional
+	public void updateEmailById(String id, String email) {
+		Optional<AccountBean> sessionAccount = accountRepository.findById(id);
+		sessionAccount.get().setEmail(email);
+		accountRepository.save(sessionAccount.get());
+	}
+	
+	/**
+	 * 根据id修改电话
+	 * @param id, phone
+	 * */
+	@Transactional
+	public void updatePhoneById(String id, String phone) {
+		Optional<AccountBean> sessionAccount = accountRepository.findById(id);
+		sessionAccount.get().setPhone(phone);
+		accountRepository.save(sessionAccount.get());
+	}
+	
+	/**
 	 * 根据id修改密码
 	 * @param id, password
 	 * */
@@ -71,8 +106,11 @@ public class AccountService {
 	 * */
 	@Transactional
 	public AccountBean findById(String id) {
-		Optional<AccountBean> accountBean = accountRepository.findById(id);
-		return accountBean.get();
+		Optional<AccountBean> accountOptional = accountRepository.findById(id);
+		if(accountOptional.isPresent()){
+			return accountOptional.get();
+		}
+		return null;
 	}
 	
 	
@@ -103,6 +141,29 @@ public class AccountService {
 	@Transactional
 	public List<AccountBean> findAll() {
 		return accountRepository.findAll();
+	}
+	
+	/**
+	 * 分页查找所有账号
+	 * */
+	@Transactional
+	public Page<AccountBean> findAll(Pageable pageable){
+		return accountRepository.findAll(pageable);
+	}
+	
+	
+	/**
+	 * 验证账号
+	 * */
+	@Transactional
+	public boolean verify(AccountBean accountBean) {
+		boolean verify = false;
+		Optional<AccountBean> sessionAccount = accountRepository.findById(accountBean.getAccount_id());
+		
+		if(sessionAccount.isPresent()){
+			verify = accountBean.getPassword().equals(sessionAccount.get().getPassword());
+		}
+		return verify;
 	}
 
 }

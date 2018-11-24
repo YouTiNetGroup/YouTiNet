@@ -57,6 +57,39 @@ public class AccountService {
 	}
 	
 	/**
+	 * 根据id修改昵称
+	 * @param id, name
+	 * */
+	@Transactional
+	public void updateNameById(String id, String name) {
+		Optional<AccountBean> sessionAccount = accountRepository.findById(id);
+		sessionAccount.get().setName(name);
+		accountRepository.save(sessionAccount.get());
+	}
+	
+	/**
+	 * 根据id修改email
+	 * @param id, email
+	 * */
+	@Transactional
+	public void updateEmailById(String id, String email) {
+		Optional<AccountBean> sessionAccount = accountRepository.findById(id);
+		sessionAccount.get().setEmail(email);
+		accountRepository.save(sessionAccount.get());
+	}
+	
+	/**
+	 * 根据id修改电话
+	 * @param id, phone
+	 * */
+	@Transactional
+	public void updatePhoneById(String id, String phone) {
+		Optional<AccountBean> sessionAccount = accountRepository.findById(id);
+		sessionAccount.get().setPhone(phone);
+		accountRepository.save(sessionAccount.get());
+	}
+	
+	/**
 	 * 根据id修改密码
 	 * @param id, password
 	 * */

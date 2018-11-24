@@ -129,12 +129,12 @@ public class TestPaperService {
 	
 	/**
 	 * 根据id修改试卷难度
-	 * @param id,difficulity_degree
+	 * @param id,difficulty_degree
 	 * */
 	@Transactional
-	public void updateDifficulityDegreeById(int id,String difficulity_degree) {
+	public void updateDifficultyDegreeById(int id,String difficulty_degree) {
 		Optional<TestPaperBean> sessionTestPaper= testPaperRepository.findById(id);
-		sessionTestPaper.get().setDifficulity_degree(difficulity_degree);
+		sessionTestPaper.get().setDifficulty_degree(difficulty_degree);
 		testPaperRepository.save(sessionTestPaper.get());
 	}
 	
@@ -154,7 +154,7 @@ public class TestPaperService {
 	 * @param id,school_year
 	 * */
 	@Transactional
-	public void updateSchoolYearById(int id,int school_year) {
+	public void updateSchoolYearById(int id,String school_year) {
 		Optional<TestPaperBean> sessionTestPaper= testPaperRepository.findById(id);
 		sessionTestPaper.get().setSchool_year(school_year);
 		testPaperRepository.save(sessionTestPaper.get());
@@ -250,17 +250,17 @@ public class TestPaperService {
 	
 	/**
 	 * 根据难度查找试卷
-	 * @param difficulity_degree
+	 * @param difficulty_degree
 	 * */
 	@Transactional
-	public List<TestPaperBean> findByDifficulityDegree(String difficulity_degree) {
+	public List<TestPaperBean> findByDifficultyDegree(String difficulty_degree) {
 		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
 		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
 		TestPaperBean temp = null;
 		
 		while(iterator.hasNext()) {
 			temp = iterator.next();
-			if(temp.getDifficulity_degree().equals(difficulity_degree)) {
+			if(temp.getDifficulty_degree().equals(difficulty_degree)) {
 				list.add(temp);
 			}
 		}
@@ -272,14 +272,14 @@ public class TestPaperService {
 	 * @param school_year，semester
 	 * */
 	@Transactional
-	public List<TestPaperBean> findBySchoolYearAndSemester(int school_year, int semester) {
+	public List<TestPaperBean> findBySchoolYearAndSemester(String school_year, int semester) {
 		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
 		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
 		TestPaperBean temp = null;
 		
 		while(iterator.hasNext()) {
 			temp = iterator.next();
-			if(temp.getSchool_year() == school_year && temp.getSemester() == semester) {
+			if(temp.getSchool_year().equals(school_year) && temp.getSemester() == semester) {
 				list.add(temp);
 			}
 		}
@@ -287,22 +287,43 @@ public class TestPaperService {
 	}
 	
 	/**
-	 * 根据组合条件查找试卷
-	 * @param creator_id, subject_id,total_score,
-	 * difficulity_degree,school_year,semester
+	 * 根据组合条件查找试卷,-1表示该条件不参与选择
+	 * @param creator_id, subject_id,
+	 * difficulty_degree,school_year,semester
 	 * */
 	@Transactional
 	public List<TestPaperBean> find(String creator_id, int subject_id,
-			int total_score,String difficulity_degree,int school_year,int semester) {
+			String difficulty_degree,String school_year,int semester) {
 		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
 		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
 		TestPaperBean temp = null;
 		
+		boolean ignore[] = new boolean[5];
+		ignore[0] = (creator_id.equals("-1"));
+		ignore[1] = (subject_id == -1);
+		ignore[2] = (difficulty_degree.equals("-1"));
+		ignore[3] = (school_year.equals("-1"));
+		ignore[4] = (semester == -1);
+		
+		
 		while(iterator.hasNext()) {
 			temp = iterator.next();
-			if(temp.getCreator_id().equals(creator_id) && temp.getSubject_id() == subject_id 
-					&& temp.getTotal_score() == total_score && temp.getDifficulity_degree().equals(difficulity_degree) 
-					&& temp.getSchool_year() == school_year && temp.getSemester() == semester) {
+			
+			boolean right[] = new boolean[5];
+			/**
+			 * 忽略该条件  符合该条件  结果
+			 * 1           1、0     = 1
+			 * 0            0       = 0
+			 * 0            1       = 1
+			 * */
+			right[0] = ignore[0] || ((!ignore[0]) && (temp.getCreator_id().equals(creator_id)));
+			right[1] = ignore[1] || ((!ignore[1]) && (temp.getSubject_id() == subject_id));
+			right[2] = ignore[2] || ((!ignore[2]) && (temp.getDifficulty_degree().equals(difficulty_degree)));
+			right[3] = ignore[3] || ((!ignore[3]) && (temp.getSchool_year().equals(school_year)));
+			right[4] = ignore[4] || ((!ignore[4]) && (temp.getSemester() == semester));
+			
+			
+			if(right[0]&&right[1]&&right[2]&&right[3]&&right[4]) {
 				list.add(temp);
 			}
 		}

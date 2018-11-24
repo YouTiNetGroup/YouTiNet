@@ -149,12 +149,12 @@ public class QuestionService {
 	
 	/**
 	 * 根据id修改试题难度
-	 * @param id,difficulity_degree
+	 * @param id,difficulty_degree
 	 * */
 	@Transactional
-	public void updateDifficulityDegreeById(int id,String difficulity_degree) {
+	public void updateDifficultyDegreeById(int id,String difficulty_degree) {
 		Optional<QuestionBean> sessionquestion= questionRepository.findById(id);
-		sessionquestion.get().setDifficulity_degree(difficulity_degree);
+		sessionquestion.get().setDifficulty_degree(difficulty_degree);
 		questionRepository.save(sessionquestion.get());
 	}
 	
@@ -280,12 +280,32 @@ public class QuestionService {
 	}
 	
 	/**
+	 * 根据试题学科id和知识点id查找试题
+	 * @param subject_id
+	 * */
+	@Transactional
+	public List<QuestionBean> findBySubjectIdAndKnowledgePointId(int subject_id,int knowledge_point_id) {
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getSubject_id() == subject_id && 
+					temp.getKnowledge_point_id() == knowledge_point_id) {
+				list.add(temp);
+			}
+		}
+		return list;
+	}
+	
+	
+	/**
 	 * 根据试题分值查找试题
 	 * @param score
 	 * */
 	@Transactional
 	public List<QuestionBean> findByScore(int score) {
-		//TODO
 		List<QuestionBean> list = new ArrayList<QuestionBean>();
 		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
 		QuestionBean temp = null;
@@ -301,17 +321,17 @@ public class QuestionService {
 	
 	/**
 	 * 根据试题难度查找试题
-	 * @param difficulity_degree
+	 * @param difficulty_degree
 	 * */
 	@Transactional
-	public List<QuestionBean> findByDifficulityDegree(String difficulity_degree) {
+	public List<QuestionBean> findByDifficultyDegree(String difficulty_degree) {
 		List<QuestionBean> list = new ArrayList<QuestionBean>();
 		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
 		QuestionBean temp = null;
 		
 		while(iterator.hasNext()) {
 			temp = iterator.next();
-			if(temp.getDifficulity_degree().equals(difficulity_degree)) {
+			if(temp.getDifficulty_degree().equals(difficulty_degree)) {
 				list.add(temp);
 			}
 		}
@@ -320,27 +340,26 @@ public class QuestionService {
 	
 	/**
 	 * 根据组合条件查找试题,-1表示该条件不参与选择
-	 * @param type_id,subject_id,knowledge_point_id,score,difficulity_degree
+	 * @param type_id,subject_id,knowledge_point_id,difficulty_degree
 	 * */
 	@Transactional
 	public List<QuestionBean> find(int type_id,int subject_id,
-			int knowledge_point_id,int score,String difficulity_degree) {
+			int knowledge_point_id,String difficulty_degree) {
 		List<QuestionBean> list = new ArrayList<QuestionBean>();
 		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
 		QuestionBean temp = null;
 		
 		
-		boolean ignore[] = new boolean[5];
+		boolean ignore[] = new boolean[4];
 		ignore[0] = (type_id == -1);
 		ignore[1] = (subject_id == -1);
 		ignore[2] = (knowledge_point_id == -1);
-		ignore[3] = (score == -1);
-		ignore[4] = (difficulity_degree.equals("-1"));
+		ignore[3] = (difficulty_degree.equals("-1"));
 		
 		while(iterator.hasNext()) {
 			temp = iterator.next();
 			
-			boolean right[] = new boolean[5];
+			boolean right[] = new boolean[4];
 			/**
 			 * 忽略该条件  符合该条件  结果
 			 * 1           1、0     = 1
@@ -350,10 +369,9 @@ public class QuestionService {
 			right[0] = ignore[0] || ((!ignore[0]) && (temp.getType_id() == type_id));
 			right[1] = ignore[1] || ((!ignore[1]) && (temp.getSubject_id() == subject_id));
 			right[2] = ignore[2] || ((!ignore[2]) && (temp.getKnowledge_point_id() == knowledge_point_id));
-			right[3] = ignore[3] || ((!ignore[3]) && (temp.getScore() == score));
-			right[4] = ignore[4] || ((!ignore[4]) && (temp.getDifficulity_degree().equals(difficulity_degree)));
+			right[3] = ignore[3] || ((!ignore[3]) && (temp.getDifficulty_degree().equals(difficulty_degree)));
 			
-			if(right[0]&&right[1]&&right[2]&&right[3]&&right[4]){
+			if(right[0]&&right[1]&&right[2]&&right[3]){
 				list.add(temp);
 			}
 		}

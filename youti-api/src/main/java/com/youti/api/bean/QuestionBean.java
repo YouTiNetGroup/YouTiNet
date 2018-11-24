@@ -16,7 +16,7 @@ public class QuestionBean {
 	private String content;
 	private String answer;
 	private int score;
-	private String difficulity_degree;
+	private String difficulty_degree;
 	private int subject_id;
 	private int knowledge_point_id;
 	public int getQuestion_id() {
@@ -49,11 +49,11 @@ public class QuestionBean {
 	public void setScore(int score) {
 		this.score = score;
 	}
-	public String getDifficulity_degree() {
-		return difficulity_degree;
+	public String getDifficulty_degree() {
+		return difficulty_degree;
 	}
-	public void setDifficulity_degree(String difficulity_degree) {
-		this.difficulity_degree = difficulity_degree;
+	public void setDifficulty_degree(String difficulty_degree) {
+		this.difficulty_degree = difficulty_degree;
 	}
 	public int getSubject_id() {
 		return subject_id;

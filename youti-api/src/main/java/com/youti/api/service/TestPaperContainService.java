@@ -128,6 +128,19 @@ public class TestPaperContainService {
 	}
 	
 	/**
+	 * 根据id修改 所属大题题号,小题题号
+	 * @param id,question_number
+	 * */
+	@Transactional
+	public void updateSetQuestionNumberById(int id,int question_number,int question_number_2) {
+		Optional<TestPaperContainBean> sessionTestPaperContain= testPaperContainRepository.findById(id);
+		sessionTestPaperContain.get().setQuestion_number(question_number);
+		sessionTestPaperContain.get().setQuestion_number_2(question_number_2);
+		testPaperContainRepository.save(sessionTestPaperContain.get());
+	}
+	
+	
+	/**
 	 * 根据id查找试卷包含
 	 * @param id
 	 * */

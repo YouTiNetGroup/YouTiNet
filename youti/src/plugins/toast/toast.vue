@@ -23,7 +23,7 @@ export default {
     },
     time: {
       type: Number,
-      default: 2000
+      default: 1000
     },
     type: {
       type: String,

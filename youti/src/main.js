@@ -28,8 +28,6 @@ const req = require.context('./assets/icons', true, /\.svg$/)
 requireAll(req)
 
 export const vueInstance = new Vue({
-  el: '#app',
   router,
-  components: { App },
-  template: '<App/>'
-});
+  render: h => h(App)
+}).$mount('#app');

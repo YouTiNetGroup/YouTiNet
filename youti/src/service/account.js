@@ -13,98 +13,76 @@ const API = {
     url: "/account/createUser",
     useFake: true
   },
-  getUserInfomation: {
-    url: "/account/getUserInfomation",
+  getUserInformation: {
+    url: "/account/getUserInformation",
     useFake: true
   },
+  updateUserInformation: {
+    url: "/account/updateUserInformation",
+    useFake: true
+  }
 }
 
 export const AccountService = {
   hasLogin: () => {
-    let currentUser = store.getters["auth/userInfo"];
-    return currentUser && currentUser.userId;
+    let userInfo = store.getters["auth/getUserInfo"];
+    return userInfo && userInfo.account_id;
   },
   logout: () => {
     store.dispatch("clearAll");
   },
 
   userlogin: async (params) => {
-    let loginResponse = await login(params.account, params.password);
-    if (!loginResponse || loginResponse.hr != 0 || !loginResponse.data) {
-      return;
+    let response = await login(params.account_id, params.password);
+    if (!response || !response.isSuccess) {
+      return response;
     }
-
     store.dispatch("clearAll");
-
-    store.dispatch('auth/saveToken', loginResponse.data);
-
-    let userInfoResponse = await getUserInfomation(params.account);
-    if (!userInfoResponse || userInfoResponse.hr != 0 || !userInfoResponse.data) {
-      return;
-    }
-
-    store.dispatch('auth/saveUserState', userInfoResponse.data);
-    return userInfoResponse;
+    return AccountService.saveUserInfo(params.account_id);
   },
 
   userRegister: async (params) => {
-    let response = await createUser(params.account, params.password);
-    if (!response || response.hr != 0) {
-      return;
+    let response = await createUser(params.account_id, params.password);
+    if (!response || !response.isSuccess) {
+      return response;
     }
-    if (response.data == null) {
-      return;
-    }
-    store.dispatch('auth/saveToken', response.data);
-    return response;
+    store.dispatch("clearAll");
+    return AccountService.saveUserInfo(params.account_id);
   },
 
-  saveUserInfo: async (params) => {
-    let response = await getUserInfomation(params.account)
-    if (!response || response.hr != 0) {
+  saveUserInfo: async (account_id) => {
+    let response = await getUserInformation(account_id);
+    if (!response || !response.isSuccess || !response.data) {
       return response;
     }
-    if (response.data == null) {
-      return response;
-    }
-    store.dispatch('auth/saveUserState', response.data);
+    store.dispatch('auth/saveUserInfo', response.data);
     return response;
   },
 
   getUserInfo: () => {
-    return store.getters["auth/userInfo"];
+    return JSON.parse(JSON.stringify(store.getters["auth/getUserInfo"]));
   },
 
-  updateUser: async (displayName, gender, age) => {
-    let params = {
-      displayName,
-      gender,
-      age
-    };
-    let response = await request("/account/update", params, 'POST');
-    if (!response || response.hr != 0) {
-      return;
+  updateUser: async (userInfo) => {
+    let response = await updateUserInformation(userInfo);
+    if (!response || !response.isSuccess) {
+      return response;
     }
-    store.dispatch('auth/updateUserInfo', params);
+    store.dispatch('auth/updateUserInformation', userInfo);
     return response;
   },
 
-  resetPassword: (account, password, oldPassword) => request('/account/resetPassword', {
-    account,
-    password,
-    oldPassword
-  }, 'POST'),
 }
 
 /**
  * 登录
  */
-const login = (account, password) => {
+const login = (account_id, password) => {
   if (API.login.useFake) {
-    return FakeAccountService.login(account, password);
+    return FakeAccountService.login(account_id, password);
   } else {
     return request(API.login.url, {
-      account,
+      account_id,
       password
     }, 'POST');
   }
@@ -113,12 +91,12 @@ const login = (account, password) => {
 /**
  * 注册用户
  */
-const createUser = (account, password) => {
+const createUser = (account_id, password) => {
   if (API.createUser.useFake) {
-    return FakeAccountService.createUser(account, password);
+    return FakeAccountService.createUser(account_id, password);
   } else {
     return request(API.createUser.url, {
-      account,
+      account_id,
       password
     }, 'POST');
   }
@@ -127,12 +105,23 @@ const createUser = (account, password) => {
 /**
  * 获取用户信息
  */
-const getUserInfomation = (account) => {
-  if (API.getUserInfomation.useFake) {
-    return FakeAccountService.getUserInfomation(account);
+const getUserInformation = (account_id) => {
+  if (API.getUserInformation.useFake) {
+    return FakeAccountService.getUserInformation(account_id);
   } else {
-    return request(API.getUserInfomation.url, {
-      account
-    }, 'POST')
+    return request(API.getUserInformation.url, {
+      account_id
+    }, 'GET');
+  }
+};
+
+/**
+ * 修改用户信息
+ */
+const updateUserInformation = (userInfo) => {
+  if (API.updateUserInformation.useFake) {
+    return FakeAccountService.updateUserInformation(userInfo);
+  } else {
+    return request(API.updateUserInformation.url, userInfo, 'POST');
   }
 };

@@ -1,56 +1,57 @@
-
-export const HRESULT = {
-  OK: 0,
-  BIND_FAILURE: -2147467242,
-  BIND_MERGE: -2147467248,
-  NO_DATA: -2147475455
+export const SUBJECT_TYPE = {
+  SF: 1,
+  BCYY: 2,
+  SJJG: 3,
+  JSJJC: 4,
+  SXHLJ: 5,
+  RJKF: 6
 }
 
-export const SCHOOL_TYPE = {
-  PX: 0,
-  DEGREE: 1,
-  COLLEGE: 2,
-  QSDX: 3,
-};
-
-export const SCHOOL_QSDX = {
-  id: "qsdx",
-  name: "精品课程"
-};
-
-
-export const SCHOOL_CATEGORY_TYPE = {
-  UN_KNOWN: -1,
-  PEIXUN: 0,
-  DEGREE: 1,
-  ELECTIVE: 2,
-};
-
-export const CLIENT_TYPE = {
-  IOS: 1,
-  ANDROID: 2,
-  PC_WEB: 3,
-  MSITE: 4
-};
-
-export const APP_TYPE = {
-  QSXT: 1,
-  QSJS: 2,
-  COLLEGE: 3,
-  QSXT_JSZG: 4
-};
-
-export const NET_TYPE = {
-  NONE: 0,
-  WIFI: 1,
-  GPRS: 2
-};
-
-export const TOKEN_ERROR_TYPE = {
-  E_AUTH_FAIL: -2004318080,
-  E_AUTH_EXPIRED: -2004318079,
-  E_AUTH_REPEATE_BROWSER: -2004318078,
-  E_AUTH_REPEATE_CILENT: -2004318077
+export const KNOWLEDGE_POINT_TYPE = {
+  CZ: 1,
+  PX: 2,
+  DG: 3,
+  TX: 4,
+  FZD: 5,
+  CORCPP: 6,
+  JAVA: 7,
+  JS: 8,
+  CSHARP: 9,
+  PYTHON: 10,
+  HTMLORCSS: 11,
+  ARRAY: 12,
+  STRING: 13,
+  LINKLIST: 14,
+  STACK: 15,
+  QUEUE: 16,
+  TREE: 17,
+  GRAPHIC: 18,
+  WLJC: 19,
+  ZZBDS: 20,
+  SJK: 21,
+  CZXT: 22,
+  BYHTXJG: 23,
+  ZHSX: 24,
+  GLTJ: 25,
+  SLGX: 26,
+  PDTL: 27,
+  CSPD: 28,
+  RJGC: 29,
+  RJCS: 30,
+  MXDX: 31
 }
 
-export const JAVA_MAX_INTEGER = 2147483647;
+export const QUESTION_TYPE = {
+  SINGLE_CHOICE: 1,
+  MULTIPLE_CHOICE: 2,
+  FILL_IN_BLANK: 3,
+  ESSAY_QUESTION: 4
+}
+
+export const DIFFICULTY_DEGREE_TYPE = {
+  ONE: 1,
+  TWO: 2,
+  THREE: 3,
+  FOUR: 4,
+  FIVE: 4
+}

@@ -9,6 +9,7 @@
 
 <script type="text/javascript">
 import vHead from "./head";
+import { AccountService } from "src/service/account";
 
 export default {
   data() {
@@ -17,6 +18,10 @@ export default {
   },
   components: {
     vHead
+	},
+	
+	destroyed() {
+    AccountService.logout();
   }
 };
 </script>

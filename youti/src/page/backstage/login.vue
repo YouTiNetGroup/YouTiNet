@@ -2,10 +2,10 @@
 	<div class="register_container">
     <div class="main_container">
       <div class="head">
-        <img class="logo" src="../../../assets/images/logo.jpg" />
+        <img class="logo" src="../../assets/images/logo.jpg" />
         <div class="text">
           <div class="title">优题网</div>
-          <div class="description">试卷智能生成与题库管理系统</div>
+          <div class="description">后台管理系统</div>
         </div>
       </div>
       <div class="body">
@@ -27,14 +27,9 @@
           密码：<input class="password" v-model="password" type="password" placeholder="请输入密码" @keyup.enter="checkLogin" />
         </div>
         <div v-show="showPswNullError" class="error_prompt">密码不能为空!</div>
-        <div class="password_container">
-          确认密码：<input class="password" v-model="confirmPsw" type="password" placeholder="请再次输入密码" @keyup.enter="checkRegister" />
-        </div>
-        <div v-show="showConfirmPwsError" class="error_prompt">与第一次输入的密码不一致!</div>
-        <div class="login_text" @click="gotoLogin">已有帐号? 立即去登录!</div>
       </div>
-      <div class="foot" @click="checkRegister">
-        <div class="commit">注册</div>
+      <div class="foot" @click="checkLogin">
+        <div class="commit">登录</div>
       </div>
     </div>
   </div>
@@ -48,11 +43,8 @@ export default {
     return {
       userAccount: null,
       password: null,
-      confirmPsw: null,
       showAccountNullError: false,
       showPswNullError: false,
-      showConfirmPwsError: false
-
     };
   },
 
@@ -66,22 +58,11 @@ export default {
       if(this.password) {
         this.showPswNullError = false;
       }
-    },
-    confirmPsw() {
-      if(this.confirmPsw && this.confirmPsw !== this.password) {
-        this.showConfirmPwsError = true;
-      } else {
-        this.showConfirmPwsError = false;
-      }
     }
   },
 
   methods: {
-    gotoLogin() {
-      this.$router.push("/login");
-    },
-
-    async checkRegister() {
+    async checkLogin() {
       if(!this.userAccount) {
         this.showAccountNullError = true;
         return;
@@ -90,17 +71,13 @@ export default {
         this.showPswNullError = true;
         return;
       }
-      if(!this.confirmPsw || this.confirmPsw !== this.password) {
-        this.showConfirmPwsError = true;
-        return;
-      }
-      let response = await AccountService.userRegister({
+      let response = await AccountService.userlogin({
         account_id: this.userAccount,
         password: this.password,
         privilege: "admin"
       });
       if(response && response.isSuccess) {
-        this.$router.push("/page/home");
+        this.$router.push("/backstage/home");
       } else {
         this.$toast.text(response.message);
       }
@@ -113,7 +90,7 @@ export default {
 .register_container {
   width: 100%;
   height: 100%;
-  background-image: url("../../../assets/images/background.jpg");
+  background-image: url("../../assets/images/background.jpg");
   background-size: 100% 100%;
   display: flex;
   justify-content: center;
@@ -137,13 +114,12 @@ export default {
         }
 
         .description {
-          font-size: 0.22rem;
+          font-size: 0.25rem;
         }
       }
     }
 
     .body {
-      position: relative;
       margin-top: 0.5rem;
       display: flex;
       flex-direction: column;

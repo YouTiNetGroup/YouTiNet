@@ -105,9 +105,10 @@ export default {
     border-bottom: 1px solid #dddddd;
   }
   .content {
-    padding: 0.2rem 0.9rem;
+    padding: 0.2rem 0.8rem;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
 
     div {

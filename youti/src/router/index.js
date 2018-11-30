@@ -15,6 +15,13 @@ import TestPaperDetail from 'src/page/center/testPaperDetail.vue'
 import UserInfo from 'src/page/center/userInfo.vue'
 import EditInfo from 'src/page/center/editInfo.vue'
 import EditPwd from 'src/page/center/editPwd.vue'
+import BackstageLogin from 'src/page/backstage/login.vue'
+import Backstage from 'src/page/backstage/backstage.vue'
+import BackstageHome from 'src/page/backstage/home.vue'
+import UserManage from 'src/page/backstage/userManage.vue'
+import TestPaperManage from 'src/page/backstage/testPaperManage.vue'
+import QuestionManage from 'src/page/backstage/questionManage.vue'
+
 
 Vue.use(VueRouter);
 
@@ -102,6 +109,39 @@ export const router = new VueRouter({
               component: EditPwd
             },
           ]
+        },
+      ]
+    },
+    {
+      path:'/backstageLogin',//后台登陆
+      name: 'backstageLogin',
+			component: BackstageLogin
+    },
+    {
+      path: '/backstage',//后台
+      name: 'backstage',
+      component: Backstage,
+      redirect:'/backstageLogin',
+      children:[
+        {
+          path:'home',//主页
+          name: 'backstageHome',
+          component: BackstageHome
+        },
+        {
+          path:'user',//用户管理
+          name: 'userManage',
+          component: UserManage
+        },
+        {
+          path:'testPaper',//试卷管理
+          name: 'testPaperManage',
+          component: TestPaperManage
+        },
+        {
+          path:'question',//题库管理
+          name: 'questionManage',
+          component: QuestionManage
         },
       ]
     }

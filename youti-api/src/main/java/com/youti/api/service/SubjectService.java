@@ -1,9 +1,12 @@
 package com.youti.api.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +24,7 @@ public class SubjectService {
 	 * */
 	@Transactional
 	public void save(SubjectBean subjectBean) {
-		//TODO
+		subjectRepository.save(subjectBean);
 	}
 	
 	/**
@@ -30,7 +33,7 @@ public class SubjectService {
 	 * */
 	@Transactional
 	public void saveAll(List<SubjectBean> list) {
-		//TODO
+		subjectRepository.saveAll(list);
 	}
 	
 	/**
@@ -39,7 +42,7 @@ public class SubjectService {
 	 * */
 	@Transactional
 	public void deleteById(int id) {
-		//TODO
+		subjectRepository.deleteById(id);
 	}
 	
 	/**
@@ -48,7 +51,7 @@ public class SubjectService {
 	 * */
 	@Transactional
 	public void deleteAllList(List<SubjectBean> list) {
-		//TODO
+		subjectRepository.deleteInBatch(list);
 	}
 	
 	/**
@@ -57,7 +60,9 @@ public class SubjectService {
 	 * */
 	@Transactional
 	public void updateSubjectById(int id,String subject) {
-		//TODO
+		Optional<SubjectBean> sessionsubject= subjectRepository.findById(id);
+		sessionsubject.get().setSubject(subject);
+		subjectRepository.save(sessionsubject.get());
 	}
 	
 	/**
@@ -66,18 +71,29 @@ public class SubjectService {
 	 * */
 	@Transactional
 	public SubjectBean findById(int id) {
-		//TODO
+		Optional<SubjectBean> subjectOptional = subjectRepository.findById(id);
+		if(subjectOptional.isPresent()) {
+			return subjectOptional.get();
+		}
+		
 		return null;
 	}
 	
 
 	/**
-	 * 查找所有试题类型
+	 * 查找所有
 	 * */
 	@Transactional
 	public List<SubjectBean> findAll() {
-		//TODO
-		return null;
+		return subjectRepository.findAll();
+	}
+	
+	/**
+	 * 分页查找所有学科类型
+	 * */
+	@Transactional
+	public Page<SubjectBean> findAll(Pageable pageable) {
+		return subjectRepository.findAll(pageable);
 	}
 
 }

@@ -1,9 +1,14 @@
 package com.youti.api.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +26,7 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public void save(TestPaperBean testPaperBean) {
-		//TODO
+		testPaperRepository.save(testPaperBean);
 	}
 	
 	/**
@@ -30,7 +35,7 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public void saveAll(List<TestPaperBean> list) {
-		//TODO
+		testPaperRepository.saveAll(list);
 	}
 	
 	/**
@@ -39,7 +44,7 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public void deleteById(int id) {
-		//TODO
+		testPaperRepository.deleteById(id);
 	}
 	
 	/**
@@ -48,7 +53,7 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public void deleteAllList(List<TestPaperBean> list) {
-		//TODO
+		testPaperRepository.deleteInBatch(list);
 	}
 	
 	/**
@@ -57,7 +62,17 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public void deleteBySubjectId(int subject_id) {
-		//TODO
+		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
+		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
+		TestPaperBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getSubject_id() == subject_id) {
+				list.add(temp);
+			}
+		}
+		testPaperRepository.deleteInBatch(list);
 	}
 	
 	/**
@@ -65,8 +80,18 @@ public class TestPaperService {
 	 * @param creator_id
 	 * */
 	@Transactional
-	public void deleteByCreatorId(int creator_id) {
-		//TODO
+	public void deleteByCreatorId(String creator_id) {
+		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
+		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
+		TestPaperBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getCreator_id().equals(creator_id)) {
+				list.add(temp);
+			}
+		}
+		testPaperRepository.deleteInBatch(list);
 	}
 	
 	/**
@@ -75,7 +100,9 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public void updateSubjectById(int id,int subject_id) {
-		//TODO
+		Optional<TestPaperBean> sessionTestPaper= testPaperRepository.findById(id);
+		sessionTestPaper.get().setSubject_id(subject_id);
+		testPaperRepository.save(sessionTestPaper.get());
 	}
 	
 	/**
@@ -84,7 +111,9 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public void updateTitleById(int id,String title) {
-		//TODO
+		Optional<TestPaperBean> sessionTestPaper= testPaperRepository.findById(id);
+		sessionTestPaper.get().setTitle(title);
+		testPaperRepository.save(sessionTestPaper.get());
 	}
 	
 	/**
@@ -93,16 +122,20 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public void updateTotalScoreById(int id,int total_score) {
-		//TODO
+		Optional<TestPaperBean> sessionTestPaper= testPaperRepository.findById(id);
+		sessionTestPaper.get().setTotal_score(total_score);
+		testPaperRepository.save(sessionTestPaper.get());
 	}
 	
 	/**
 	 * 根据id修改试卷难度
-	 * @param id,difficulity_degree
+	 * @param id,difficulty_degree
 	 * */
 	@Transactional
-	public void updateDifficulityDegreeById(int id,String difficulity_degree) {
-		//TODO
+	public void updateDifficultyDegreeById(int id,String difficulty_degree) {
+		Optional<TestPaperBean> sessionTestPaper= testPaperRepository.findById(id);
+		sessionTestPaper.get().setDifficulty_degree(difficulty_degree);
+		testPaperRepository.save(sessionTestPaper.get());
 	}
 	
 	/**
@@ -111,7 +144,9 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public void updateSemesterById(int id,int semester) {
-		//TODO
+		Optional<TestPaperBean> sessionTestPaper= testPaperRepository.findById(id);
+		sessionTestPaper.get().setSemester(semester);
+		testPaperRepository.save(sessionTestPaper.get());
 	}
 	
 	/**
@@ -119,8 +154,10 @@ public class TestPaperService {
 	 * @param id,school_year
 	 * */
 	@Transactional
-	public void updateSchoolYearById(int id,int school_year) {
-		//TODO
+	public void updateSchoolYearById(int id,String school_year) {
+		Optional<TestPaperBean> sessionTestPaper= testPaperRepository.findById(id);
+		sessionTestPaper.get().setSchool_year(school_year);
+		testPaperRepository.save(sessionTestPaper.get());
 	}
 	
 	/**
@@ -129,7 +166,11 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public TestPaperBean findById(int id) {
-		//TODO
+		Optional<TestPaperBean> testPaperOptional = testPaperRepository.findById(id);
+		if(testPaperOptional.isPresent()) {
+			return testPaperOptional.get();
+		}
+		
 		return null;
 	}
 	
@@ -139,8 +180,15 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public List<TestPaperBean> findAll() {
-		//TODO
-		return null;
+		return testPaperRepository.findAll();
+	}
+	
+	/**
+	 * 分页查找所有试卷
+	 * */
+	@Transactional
+	public Page<TestPaperBean> findAll(Pageable pageable) {
+		return testPaperRepository.findAll(pageable);
 	}
 	
 	/**
@@ -148,9 +196,18 @@ public class TestPaperService {
 	 * @param creator_id
 	 * */
 	@Transactional
-	public List<TestPaperBean> findByCreatorId(int creator_id) {
-		//TODO
-		return null;
+	public List<TestPaperBean> findByCreatorId(String creator_id) {
+		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
+		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
+		TestPaperBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getCreator_id().equals(creator_id)) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
 	
 	/**
@@ -159,8 +216,17 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public List<TestPaperBean> findBySubjectId(int subject_id) {
-		//TODO
-		return null;
+		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
+		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
+		TestPaperBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getSubject_id() == subject_id) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
 	
 	/**
@@ -169,18 +235,36 @@ public class TestPaperService {
 	 * */
 	@Transactional
 	public List<TestPaperBean> findByTotalScore(int total_score) {
-		//TODO
-		return null;
+		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
+		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
+		TestPaperBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getTotal_score() == total_score) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
 	
 	/**
 	 * 根据难度查找试卷
-	 * @param difficulity_degree
+	 * @param difficulty_degree
 	 * */
 	@Transactional
-	public List<TestPaperBean> findByDifficulityDegree(String difficulity_degree) {
-		//TODO
-		return null;
+	public List<TestPaperBean> findByDifficultyDegree(String difficulty_degree) {
+		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
+		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
+		TestPaperBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getDifficulty_degree().equals(difficulty_degree)) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
 	
 	/**
@@ -188,21 +272,62 @@ public class TestPaperService {
 	 * @param school_year，semester
 	 * */
 	@Transactional
-	public List<TestPaperBean> findBySchoolYearAndSemester(int school_year, int semester) {
-		//TODO
-		return null;
+	public List<TestPaperBean> findBySchoolYearAndSemester(String school_year, int semester) {
+		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
+		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
+		TestPaperBean temp = null;
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getSchool_year().equals(school_year) && temp.getSemester() == semester) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
 	
 	/**
-	 * 根据组合条件查找试题
-	 * @param creator_id, subject_id,total_score,
-	 * difficulity_degree,school_year,semester
+	 * 根据组合条件查找试卷,-1表示该条件不参与选择
+	 * @param creator_id, subject_id,
+	 * difficulty_degree,school_year,semester
 	 * */
 	@Transactional
-	public List<TestPaperBean> find(int creator_id, int subject_id,
-			int total_score,String difficulity_degree,int school_year,int semester) {
-		//TODO
-		return null;
+	public List<TestPaperBean> find(String creator_id, int subject_id,
+			String difficulty_degree,String school_year,int semester) {
+		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
+		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
+		TestPaperBean temp = null;
+		
+		boolean ignore[] = new boolean[5];
+		ignore[0] = (creator_id.equals("-1"));
+		ignore[1] = (subject_id == -1);
+		ignore[2] = (difficulty_degree.equals("-1"));
+		ignore[3] = (school_year.equals("-1"));
+		ignore[4] = (semester == -1);
+		
+		
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			
+			boolean right[] = new boolean[5];
+			/**
+			 * 忽略该条件  符合该条件  结果
+			 * 1           1、0     = 1
+			 * 0            0       = 0
+			 * 0            1       = 1
+			 * */
+			right[0] = ignore[0] || ((!ignore[0]) && (temp.getCreator_id().equals(creator_id)));
+			right[1] = ignore[1] || ((!ignore[1]) && (temp.getSubject_id() == subject_id));
+			right[2] = ignore[2] || ((!ignore[2]) && (temp.getDifficulty_degree().equals(difficulty_degree)));
+			right[3] = ignore[3] || ((!ignore[3]) && (temp.getSchool_year().equals(school_year)));
+			right[4] = ignore[4] || ((!ignore[4]) && (temp.getSemester() == semester));
+			
+			
+			if(right[0]&&right[1]&&right[2]&&right[3]&&right[4]) {
+				list.add(temp);
+			}
+		}
+		return list;
 	}
 	
 }

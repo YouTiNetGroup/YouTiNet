@@ -15,6 +15,8 @@ public class TestPaperContainBean {
 	private int question_id;
 	private int test_paper_id;
 	private int set_score;
+	private int question_number;
+	private int question_number_2;
 	
 	public int getId() {
 		return id;
@@ -39,6 +41,18 @@ public class TestPaperContainBean {
 	}
 	public void setSet_score(int set_score) {
 		this.set_score = set_score;
+	}
+	public int getQuestion_number() {
+		return question_number;
+	}
+	public void setQuestion_number(int question_number) {
+		this.question_number = question_number;
+	}
+	public int getQuestion_number_2() {
+		return question_number_2;
+	}
+	public void setQuestion_number_2(int question_number_2) {
+		this.question_number_2 = question_number_2;
 	}
 	
 }

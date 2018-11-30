@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,7 +84,11 @@ public class KnowledgePointService {
 	 * */
 	@Transactional
 	public KnowledgePointBean findById(int id) {
-		return knowledgePointRepository.findById(id).get();
+		Optional<KnowledgePointBean> knowledgePointOptional = knowledgePointRepository.findById(id);
+		if(knowledgePointOptional.isPresent()) {
+			return knowledgePointOptional.get();
+		}
+		return null;
 	}
 	
 	/**
@@ -91,6 +97,15 @@ public class KnowledgePointService {
 	@Transactional
 	public List<KnowledgePointBean> findAll(){
 		return knowledgePointRepository.findAll();
+	}
+	
+
+	/**
+	 * 分页查找所有知识点
+	 * */
+	@Transactional
+	public Page<KnowledgePointBean> findAll(Pageable pageable){
+		return knowledgePointRepository.findAll(pageable);
 	}
 	
 	/**

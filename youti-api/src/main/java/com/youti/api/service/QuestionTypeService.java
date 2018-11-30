@@ -1,9 +1,12 @@
 package com.youti.api.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +24,7 @@ public class QuestionTypeService {
 	 * */
 	@Transactional
 	public void save(QuestionTypeBean questionTypeBean) {
-		//TODO
+		questionTypeRepository.save(questionTypeBean);
 	}
 	
 	/**
@@ -30,7 +33,7 @@ public class QuestionTypeService {
 	 * */
 	@Transactional
 	public void saveAll(List<QuestionTypeBean> list) {
-		//TODO
+		questionTypeRepository.saveAll(list);
 	}
 	
 	/**
@@ -39,7 +42,7 @@ public class QuestionTypeService {
 	 * */
 	@Transactional
 	public void deleteById(int id) {
-		//TODO
+		questionTypeRepository.deleteById(id);
 	}
 	
 	/**
@@ -48,7 +51,7 @@ public class QuestionTypeService {
 	 * */
 	@Transactional
 	public void deleteAllList(List<QuestionTypeBean> list) {
-		//TODO
+		questionTypeRepository.deleteInBatch(list);
 	}
 	
 	/**
@@ -57,7 +60,9 @@ public class QuestionTypeService {
 	 * */
 	@Transactional
 	public void updateQuestionTypeById(int id,String question_type) {
-		//TODO
+		Optional<QuestionTypeBean> sessionquestionType= questionTypeRepository.findById(id);
+		sessionquestionType.get().setQuestion_type(question_type);
+		questionTypeRepository.save(sessionquestionType.get());
 	}
 	
 	/**
@@ -66,7 +71,11 @@ public class QuestionTypeService {
 	 * */
 	@Transactional
 	public QuestionTypeBean findById(int id) {
-		//TODO
+		Optional<QuestionTypeBean> questionTypeOptional = questionTypeRepository.findById(id);
+		if(questionTypeOptional.isPresent()) {
+			return questionTypeOptional.get();
+		}
+		
 		return null;
 	}
 	
@@ -76,8 +85,15 @@ public class QuestionTypeService {
 	 * */
 	@Transactional
 	public List<QuestionTypeBean> findAll() {
-		//TODO
-		return null;
+		return questionTypeRepository.findAll();
+	}
+	
+	/**
+	 * 分页查找所有试题类型
+	 * */
+	@Transactional
+	public Page<QuestionTypeBean> findAll(Pageable pageable) {
+		return questionTypeRepository.findAll(pageable);
 	}
 
 }

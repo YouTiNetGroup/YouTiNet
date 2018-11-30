@@ -1,5 +1,5 @@
 export const FakeAccountService = {
-  login: (account_id, password) => {
+  login: (account_id, password, privilege) => {
     if(account_id === "admin" && password === "admin") {
       return Promise.resolve({
         isSuccess: true,
@@ -14,7 +14,7 @@ export const FakeAccountService = {
       });
     }
   },
-  createUser: (account_id, password) => {
+  createUser: (account_id, password, privilege) => {
     if(account_id === "admin" && password === "admin") {
       return Promise.resolve({
         isSuccess: true,

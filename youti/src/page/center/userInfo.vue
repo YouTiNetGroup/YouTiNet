@@ -7,7 +7,7 @@
                 </div>
                 <div class="right_body" style="display: flex; margin: 0.2rem">
                     <div class="photo">
-                        <img src="../../assets/images/logo.jpg" style="width: 100%; height: 100%; position: absolute">
+                        <img src="../../assets/images/avatar_default.png" style="width: 100%; height: 100%; position: absolute">
                     </div>
                     <div class="person_detail">
                         <div class="detail">
@@ -71,7 +71,6 @@ export default {
       width: 1.2rem;
       height: 1.2rem;
       position: relative;
-      border: 1px solid #dddddd;
     }
     .person_detail {
       display: flex;

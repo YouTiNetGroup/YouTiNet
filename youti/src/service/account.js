@@ -33,7 +33,7 @@ export const AccountService = {
   },
 
   userlogin: async (params) => {
-    let response = await login(params.account_id, params.password);
+    let response = await login(params.account_id, params.password, params.privilege);
     if (!response || !response.isSuccess) {
       return response;
     }
@@ -42,7 +42,7 @@ export const AccountService = {
   },
 
   userRegister: async (params) => {
-    let response = await createUser(params.account_id, params.password);
+    let response = await createUser(params.account_id, params.password, params.privilege);
     if (!response || !response.isSuccess) {
       return response;
     }
@@ -77,13 +77,14 @@ export const AccountService = {
 /**
  * 登录
  */
-const login = (account_id, password) => {
+const login = (account_id, password, privilege) => {
   if (API.login.useFake) {
-    return FakeAccountService.login(account_id, password);
+    return FakeAccountService.login(account_id, password, privilege);
   } else {
     return request(API.login.url, {
       account_id,
-      password
+      password,
+      privilege
     }, 'POST');
   }
 }
@@ -91,13 +92,14 @@ const login = (account_id, password) => {
 /**
  * 注册用户
  */
-const createUser = (account_id, password) => {
+const createUser = (account_id, password, privilege) => {
   if (API.createUser.useFake) {
-    return FakeAccountService.createUser(account_id, password);
+    return FakeAccountService.createUser(account_id, password, privilege);
   } else {
     return request(API.createUser.url, {
       account_id,
-      password
+      password,
+      privilege
     }, 'POST');
   }
 }

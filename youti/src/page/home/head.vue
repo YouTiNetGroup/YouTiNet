@@ -17,7 +17,7 @@
 			<div class="user_container">
 				<el-dropdown v-if="hasLogin" @command="handleCommand">
 					<div class="user_info">
-						<img :src="userImg"/>
+						<img src="../../assets/images/avatar_default.png"/>
 						<span class="username">{{ userInfo.name || userInfo.account_id }}</span>
 					</div>
 					<el-dropdown-menu slot="dropdown">
@@ -40,7 +40,6 @@ import { globalBus } from "src/service/globalBus";
 export default {
   data() {
     return {
-      userImg: require("src/assets/images/logo.jpg"),
       userInfo: {},
       hasLogin: false,
       paperQuestions: [],

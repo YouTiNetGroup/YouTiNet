@@ -1,6 +1,6 @@
 <template>
   <div class="test_paper_detail">
-    <div class="breadcrumb">
+    <div v-if="!isBackstage" class="breadcrumb">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/page/userCenter/myTestPaper' }">我的试卷</el-breadcrumb-item>
@@ -15,7 +15,7 @@
             <div class="common_deatil">
               <div class="school_year">学年：{{ testPaper.school_year }}</div>
               <div class="semester">学期：第{{ testPaper.semester }}学期</div>
-              <div class="subject_name">科目：{{ testPaper.subject_name }}</div>
+              <div class="subject_name">科目：{{ getSubject(testPaper.subject_id) }}</div>
               <div class="total_score">满分：{{ testPaper.total_score }} 分</div>
             </div>
             <div class="student_detail">
@@ -45,13 +45,15 @@
 </template>
 
 <script>
-import store from "src/store"
+import store from "src/store";
+import common from "src/assets/js/common.js";
 import { TestPaperService } from "src/service/testPaper.js";
 import { QuestionService } from "src/service/question.js";
 
 export default {
   data() {
     return {
+      isBackstage: false,
       testPaper: {},
       questions: [],
     };
@@ -69,6 +71,7 @@ export default {
 
   methods: {
     async initData() {
+      this.isBackstage = this.$route.name == "backTestPaperDetail";
       this.testPaper = await TestPaperService.getTestPaper();
       this.questions = await QuestionService.getTestPaperQuestions(this.$route.params.test_paper_id);
       this.questions = QuestionService.groupQuestionByQuestionType(this.questions);
@@ -82,7 +85,11 @@ export default {
         case 3: return "四、";
         default: return "";
       }
-    }
+    },
+
+    getSubject(subject_id) {
+      return common.getSubject(subject_id);
+    },
   }
 };
 </script>

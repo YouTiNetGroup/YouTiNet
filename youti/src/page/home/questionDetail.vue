@@ -1,6 +1,6 @@
 <template>
   <div class="test_paper_detail">
-    <div class="breadcrumb">
+    <div v-if="!isBackstage" class="breadcrumb">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/page/questionBank' }">查看题库</el-breadcrumb-item>
@@ -35,6 +35,7 @@ import { QuestionService } from "src/service/question.js";
 export default {
   data() {
     return {
+      isBackstage: false,
       question: {},
       showAnswer: false
     };
@@ -48,6 +49,7 @@ export default {
 
   methods: {
     async initData() {
+      this.isBackstage = this.$route.name == "backQuestionDetail";
       this.question = await QuestionService.getQuestion();
     },
 

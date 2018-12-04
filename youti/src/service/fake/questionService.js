@@ -428,4 +428,20 @@ export const FakeQuestionService = {
         ]
     });
   },
+
+  modifyQuestionInformation: (question) => {
+    return Promise.resolve({
+      isSuccess: true,
+      message: "成功",
+      data: ""
+    });
+  },
+
+  deleteQuestionById: (question_id) => {
+    return Promise.resolve({
+      isSuccess: true,
+      message: "成功",
+      data: ""
+    });
+  },
 }

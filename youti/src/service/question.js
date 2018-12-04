@@ -14,6 +14,14 @@ const API = {
     url: "/question/getQuestionByTestPaperId",
     useFake: true
   },
+  modifyQuestionInformation: {
+    url: "/question/modifyQuestionInformation",
+    useFake: true
+  },
+  deleteQuestionById: {
+    url: "/question/deleteQuestionById",
+    useFake: true
+  },
 }
 
 export const QuestionService = {
@@ -25,8 +33,8 @@ export const QuestionService = {
     return response.data;
   },
 
-  getTestPaperQuestions: async (test_paper_id) => {
-    let response = await getQuestionByTestPaperId(test_paper_id);
+  getTestPaperQuestions: async (question_id) => {
+    let response = await getQuestionByTestPaperId(question_id);
     if (!response || !response.isSuccess || !response.data) {
       return;
     }
@@ -77,6 +85,16 @@ export const QuestionService = {
     ];
   },
 
+  modifyQuestion: async (question) => {
+    let response = await modifyQuestionInformation(question);
+    return response;
+  },
+
+  deleteQuestion: async (question_id) => {
+    let response = await deleteQuestionById(question_id);
+    return response;
+  },
+
   saveQuestion: (question) => {
     store.dispatch('question/saveQuestion', question);
   },
@@ -121,12 +139,38 @@ const getAllQuestions = () => {
 /**
  * 获取试卷的题目
  */
-const getQuestionByTestPaperId = (test_paper_id) => {
+const getQuestionByTestPaperId = (question_id) => {
   if (API.getQuestionByTestPaperId.useFake) {
-    return FakeQuestionService.getQuestionByTestPaperId(test_paper_id);
+    return FakeQuestionService.getQuestionByTestPaperId(question_id);
   } else {
     return request(API.getQuestionByTestPaperId.url, {
-      test_paper_id
+      question_id
     }, 'GET');
+  }
+};
+
+/**
+ * 修改题目信息
+ */
+const modifyQuestionInformation = (question) => {
+  if (API.modifyQuestionInformation.useFake) {
+    return FakeQuestionService.modifyQuestionInformation(question);
+  } else {
+    return request(API.modifyQuestionInformation.url, {
+      question
+    }, 'POST');
+  }
+};
+
+/**
+ * 删除题目
+ */
+const deleteQuestionById = (question_id) => {
+  if (API.deleteQuestionById.useFake) {
+    return FakeQuestionService.deleteQuestionById(question_id);
+  } else {
+    return request(API.deleteQuestionById.url, {
+      question_id
+    }, 'POST');
   }
 };

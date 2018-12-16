@@ -443,7 +443,7 @@ export default {
                   flex: 0 0 auto;
                 }
                 .question {
-                  /deep/ .subject-des li {
+                  /deep/ li {
                     list-style-type: upper-alpha;
                     list-style-position: inside;
                     margin: 10px 0;

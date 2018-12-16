@@ -193,7 +193,7 @@ export default {
 
         .question_content {
           cursor: pointer;
-          /deep/ .subject-des li {
+          /deep/ li {
             list-style-type: upper-alpha;
             list-style-position: inside;
             margin: 10px 0;

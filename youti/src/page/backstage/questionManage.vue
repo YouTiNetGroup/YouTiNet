@@ -1,6 +1,9 @@
 <template>
 	<div class="question_manage">
-    <div class="search_amount">共 {{ filterQuestionList.length }} 条结果</div>
+    <div class="top">
+      <div class="search_amount">共 {{ filterQuestionList.length }} 条结果</div>
+      <div class="add_question" @click="addQuestion">添加题目</div>
+    </div>
     <div class="question_manage_container">
       <div class="filter_container">
         <div class="filter_item">
@@ -178,7 +181,7 @@ export default {
       ],
       knowledgePointIdOptions: [],
       typeIdOptions: [
-        { value: "单选题", index: 1 }, { value: "不定项选择题", index: 2 }, { value: "填空题", index: 3 }, { value: "问答题", index: 4 }
+        { value: "单选题", index: 1 }, { value: "多选题", index: 2 }, { value: "填空题", index: 3 }, { value: "解答题", index: 4 }
       ],
       difficultyDegreeOptions: [
         { value: "一星", index: "1" }, { value: "二星", index: "2" }, { value: "三星", index: "3" }, { value: "四星", index: "4" }, { value: "五星", index: "5" }
@@ -289,6 +292,10 @@ export default {
       this.clickFilter();
     },
 
+    addQuestion() {
+      this.$router.push("addQuestion");
+    },
+
     gotoQuestionDetail(index) {
       let item = this.filterQuestionList[(this.currentPage-1) * this.pageSize + index];
       QuestionService.saveQuestion(item);
@@ -369,9 +376,26 @@ export default {
   display: flex;
   flex-direction: column;
 
-  .search_amount {
-    margin: 0 0.3rem;
-    font-size: 0.2rem;
+  .top {
+    margin: 0 0.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .search_amount {
+      font-size: 0.2rem;
+    }
+    .add_question {
+      width: 1rem;
+      height: 0.4rem;
+      border-radius: 0.05rem;
+      font-size: 0.2rem;
+      background:#4cb2e2;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
   }
 
   .question_manage_container {

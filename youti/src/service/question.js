@@ -14,6 +14,10 @@ const API = {
     url: "/question/getQuestionByTestPaperId",
     useFake: true
   },
+  addQuestion: {
+    url: "/question/addQuestion",
+    useFake: true
+  },
   modifyQuestionInformation: {
     url: "/question/modifyQuestionInformation",
     useFake: true
@@ -66,7 +70,7 @@ export const QuestionService = {
       total: 0
     },
     {
-      title: "不定项选择题",
+      title: "多选题",
       type: QUESTION_TYPE.MULTIPLE_CHOICE,
       items: [],
       total: 0
@@ -77,12 +81,17 @@ export const QuestionService = {
       total: 0
     },
     {
-      title: "问答题",
+      title: "解答题",
       type: QUESTION_TYPE.ESSAY_QUESTION,
       items: [],
       total: 0
     }
     ];
+  },
+
+  addNewQuestion: async (question) => {
+    let response = await addQuestion(question);
+    return response;
   },
 
   modifyQuestion: async (question) => {
@@ -146,6 +155,19 @@ const getQuestionByTestPaperId = (question_id) => {
     return request(API.getQuestionByTestPaperId.url, {
       question_id
     }, 'GET');
+  }
+};
+
+/**
+ * 添加题目
+ */
+const addQuestion = (question) => {
+  if (API.addQuestion.useFake) {
+    return FakeQuestionService.addQuestion(question);
+  } else {
+    return request(API.addQuestion.url, {
+      question
+    }, 'POST');
   }
 };
 

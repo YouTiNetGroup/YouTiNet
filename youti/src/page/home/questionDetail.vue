@@ -115,7 +115,7 @@ export default {
         align-items: flex-start;
 
         .question_content {
-          /deep/ .subject-des li {
+          /deep/ li {
             list-style-type: upper-alpha;
             list-style-position: inside;
             margin: 10px 0;

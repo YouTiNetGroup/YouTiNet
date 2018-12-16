@@ -102,7 +102,7 @@ export default {
       ],
       knowledgePointOptions: [],
       questionTypeOptions: [
-        { value: "单选题", index: 1 }, { value: "不定项选择题", index: 2 }, { value: "填空题", index: 3 }, { value: "问答题", index: 4 }
+        { value: "单选题", index: 1 }, { value: "多选题", index: 2 }, { value: "填空题", index: 3 }, { value: "解答题", index: 4 }
       ],
       difficultyDegreeOptions: [
         { value: "一星", index: "1" }, { value: "二星", index: "2" }, { value: "三星", index: "3" }, { value: "四星", index: "4" }, { value: "五星", index: "5" }

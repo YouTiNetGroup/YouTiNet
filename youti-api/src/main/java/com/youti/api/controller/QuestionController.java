@@ -1,5 +1,8 @@
 package com.youti.api.controller;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -88,6 +91,39 @@ public class QuestionController {
 	@ResponseBody
 	public RespEntity getQuestionList() {
 		RespEntity respEntity = new RespEntity();
+		List <QuestionBean> list = questionService.findAll();
+		Iterator<QuestionBean> it = list.iterator();
+		while(it.hasNext()){
+			QuestionBean x = it.next();
+			QuestionBean question = questionService.findById(x.getQuestion_id());
+			if(question == null) {
+				respEntity.setIsSuccess(false);
+				respEntity.setMessage("试题不存在");
+			}else {
+				int type_id = question.getType_id();
+				int subject_id = question.getSubject_id();
+				int knowledge_point_id = question.getKnowledge_point_id();
+				
+				QuestionTypeBean type = questionTypeService.findById(type_id);
+				SubjectBean subject = subjectService.findById(subject_id);
+				KnowledgePointBean knowledge = knowledgePointService.findById(knowledge_point_id);
+
+				Map<String, Object> params = JSON.parseObject(JSON.toJSONString(question));
+				
+				if(type!=null) {
+					params.put("question_type", type.getQuestion_type());
+				}
+				if(subject!=null) {
+					params.put("subject", subject.getSubject());
+				}
+				if(knowledge!=null) {
+					params.put("knowledge_point", knowledge.getKnowledge_point());
+				}
+				respEntity.setData(params);
+			}
+		}
+		respEntity.setIsSuccess(true);
+		respEntity.setMessage("成功");
 		return respEntity;
 	}
 	
@@ -98,7 +134,46 @@ public class QuestionController {
 	@ResponseBody
 	public RespEntity getQuestionListBy(@RequestBody Map<String, Object> params) {
 		RespEntity respEntity = new RespEntity();
-		return respEntity; 
+		//选择条件
+		int type_id= (int)params.get("type_id");
+		int subject_id= (int)params.get("subject_id");
+		int knowledge_point_id= (int)params.get("knowledge_point_id");
+		String difficulty_degree= (String)params.get("difficulty_degree");
+		
+		List <QuestionBean> list = questionService.find(type_id,subject_id,knowledge_point_id,difficulty_degree);
+		Iterator<QuestionBean> it = list.iterator();
+		while(it.hasNext()){
+			QuestionBean x = it.next();
+			QuestionBean question = questionService.findById(x.getQuestion_id());
+			if(question == null) {
+				respEntity.setIsSuccess(false);
+				respEntity.setMessage("试题不存在");
+			}else {
+				int type_id1 = question.getType_id();
+				int subject_id1 = question.getSubject_id();
+				int knowledge_point_id1 = question.getKnowledge_point_id();
+				
+				QuestionTypeBean type = questionTypeService.findById(type_id1);
+				SubjectBean subject = subjectService.findById(subject_id1);
+				KnowledgePointBean knowledge = knowledgePointService.findById(knowledge_point_id1);
+
+				Map<String, Object> param = JSON.parseObject(JSON.toJSONString(question));
+				
+				if(type!=null) {
+					param.put("question_type", type.getQuestion_type());
+				}
+				if(subject!=null) {
+					param.put("subject", subject.getSubject());
+				}
+				if(knowledge!=null) {
+					param.put("knowledge_point", knowledge.getKnowledge_point());
+				}
+				respEntity.setData(param);
+			}
+		}
+		respEntity.setIsSuccess(true);
+		respEntity.setMessage("成功");
+		return respEntity;
 	}
 	
 	
@@ -109,9 +184,17 @@ public class QuestionController {
 	 * */
 	@RequestMapping("/create")
 	@ResponseBody
-	public RespEntity createQuestion(@RequestBody Map<String, Object> params) {
+	public RespEntity createQuestion(@RequestBody QuestionBean questionBean) {
 		RespEntity respEntity = new RespEntity();
-		return respEntity; 
+		if(questionService.findById(questionBean.getQuestion_id()) != null) {
+			respEntity.setIsSuccess(false);
+			respEntity.setMessage("题目已经存在");
+		}else {
+			questionService.save(questionBean);
+			respEntity.setIsSuccess(true);
+			respEntity.setMessage("题目创建成功");
+		}
+		return respEntity;
 	}
 	
 	
@@ -120,9 +203,18 @@ public class QuestionController {
 	 * */
 	@RequestMapping("/delete")
 	@ResponseBody
-	public RespEntity deleteQuestion(@RequestBody Map<String, Object> params) {
-		RespEntity respEntity = new RespEntity();
-		return respEntity; 
+	public RespEntity deleteQuestion(@RequestBody QuestionBean questionBean) {
+       RespEntity respEntity = new RespEntity();
+		
+		if(questionService.findById(questionBean.getQuestion_id()) == null) {
+			respEntity.setIsSuccess(false);
+			respEntity.setMessage("题目不存在");
+		}else {
+			questionService.deleteById(questionBean.getQuestion_id());
+			respEntity.setIsSuccess(true);
+			respEntity.setMessage("题目删除成功");
+		}
+		return respEntity;
 	}
 	
 	/**
@@ -130,8 +222,17 @@ public class QuestionController {
 	 * */
 	@RequestMapping("/modify")
 	@ResponseBody
-	public RespEntity modifyQuestion(@RequestBody Map<String, Object> params) {
-		RespEntity respEntity = new RespEntity();
+	public RespEntity modifyQuestion(@RequestBody QuestionBean questionBean) {
+        RespEntity respEntity = new RespEntity();
+		
+		if(questionService.findById(questionBean.getQuestion_id()) == null) {
+			respEntity.setIsSuccess(false);
+			respEntity.setMessage("试题不存在");
+		}else {
+			questionService.save(questionBean);
+			respEntity.setIsSuccess(true);
+			respEntity.setMessage("试题信息修改成功");
+		}
 		return respEntity;
 	}
 	

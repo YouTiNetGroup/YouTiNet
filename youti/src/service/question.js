@@ -14,6 +14,18 @@ const API = {
     url: "/question/getQuestionByTestPaperId",
     useFake: true
   },
+  addQuestion: {
+    url: "/question/addQuestion",
+    useFake: true
+  },
+  modifyQuestionInformation: {
+    url: "/question/modifyQuestionInformation",
+    useFake: true
+  },
+  deleteQuestionById: {
+    url: "/question/deleteQuestionById",
+    useFake: true
+  },
 }
 
 export const QuestionService = {
@@ -25,8 +37,8 @@ export const QuestionService = {
     return response.data;
   },
 
-  getTestPaperQuestions: async (test_paper_id) => {
-    let response = await getQuestionByTestPaperId(test_paper_id);
+  getTestPaperQuestions: async (question_id) => {
+    let response = await getQuestionByTestPaperId(question_id);
     if (!response || !response.isSuccess || !response.data) {
       return;
     }
@@ -58,7 +70,7 @@ export const QuestionService = {
       total: 0
     },
     {
-      title: "不定项选择题",
+      title: "多选题",
       type: QUESTION_TYPE.MULTIPLE_CHOICE,
       items: [],
       total: 0
@@ -69,12 +81,27 @@ export const QuestionService = {
       total: 0
     },
     {
-      title: "问答题",
+      title: "解答题",
       type: QUESTION_TYPE.ESSAY_QUESTION,
       items: [],
       total: 0
     }
     ];
+  },
+
+  addNewQuestion: async (question) => {
+    let response = await addQuestion(question);
+    return response;
+  },
+
+  modifyQuestion: async (question) => {
+    let response = await modifyQuestionInformation(question);
+    return response;
+  },
+
+  deleteQuestion: async (question_id) => {
+    let response = await deleteQuestionById(question_id);
+    return response;
   },
 
   saveQuestion: (question) => {
@@ -121,12 +148,51 @@ const getAllQuestions = () => {
 /**
  * 获取试卷的题目
  */
-const getQuestionByTestPaperId = (test_paper_id) => {
+const getQuestionByTestPaperId = (question_id) => {
   if (API.getQuestionByTestPaperId.useFake) {
-    return FakeQuestionService.getQuestionByTestPaperId(test_paper_id);
+    return FakeQuestionService.getQuestionByTestPaperId(question_id);
   } else {
     return request(API.getQuestionByTestPaperId.url, {
-      test_paper_id
+      question_id
     }, 'GET');
+  }
+};
+
+/**
+ * 添加题目
+ */
+const addQuestion = (question) => {
+  if (API.addQuestion.useFake) {
+    return FakeQuestionService.addQuestion(question);
+  } else {
+    return request(API.addQuestion.url, {
+      question
+    }, 'POST');
+  }
+};
+
+/**
+ * 修改题目信息
+ */
+const modifyQuestionInformation = (question) => {
+  if (API.modifyQuestionInformation.useFake) {
+    return FakeQuestionService.modifyQuestionInformation(question);
+  } else {
+    return request(API.modifyQuestionInformation.url, {
+      question
+    }, 'POST');
+  }
+};
+
+/**
+ * 删除题目
+ */
+const deleteQuestionById = (question_id) => {
+  if (API.deleteQuestionById.useFake) {
+    return FakeQuestionService.deleteQuestionById(question_id);
+  } else {
+    return request(API.deleteQuestionById.url, {
+      question_id
+    }, 'POST');
   }
 };

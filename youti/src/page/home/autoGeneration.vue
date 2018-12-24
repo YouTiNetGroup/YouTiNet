@@ -26,7 +26,7 @@
                 </div>
               </div>
               <div class="question_box">
-                <el-checkbox class="text" :label="2">不定项选择题</el-checkbox>
+                <el-checkbox class="text" :label="2">多选题</el-checkbox>
                 <div class="component">
                   <div class="count">数量：
                     <el-input-number v-model="questionCount[1]" size="mini" label="数量" :min="5" :max="10" @change="handleChange()"></el-input-number>
@@ -48,7 +48,7 @@
                 </div>
               </div>
               <div class="question_box">
-                <el-checkbox class="text" :label="4">问答题</el-checkbox>
+                <el-checkbox class="text" :label="4">解答题</el-checkbox>
                 <div class="component">
                   <div class="count">数量：
                     <el-input-number v-model="questionCount[3]" size="mini" label="数量" :min="3" :max="10" @change="handleChange()"></el-input-number>
@@ -111,7 +111,10 @@
         </div>
         <div class="bottom">
           <div class="total_score">总分：{{ total_score }}</div>
-          <div class="generate_test_paper" @click="generateTestPaper('form')">生成试卷</div>
+          <div class="button">
+            <div class="generate_test_paper" @click="generateTestPaper('form')">生成试卷</div>
+            <div class="cancle" @click="cancle">取消</div>
+          </div>
         </div>
       </div>
     </div>
@@ -250,6 +253,14 @@ export default {
       } else {
         this.$toast.text("总分高于100，请删减题目或修改分值后重试");
       }
+    },
+
+    cancle() {
+      this.$confirm('确定取消试卷生成？').then(() => {
+        this.$router.push("home");
+      }).catch(() => {
+        return;
+      });
     }
   }
 };
@@ -345,18 +356,35 @@ export default {
           margin: 0 0.2rem;
           font-size: 0.3rem;
         }
-        .generate_test_paper {
+        .button {
           margin: 0 0.2rem;
-          width: 1.5rem;
-          height: 0.5rem;
-          border-radius: 0.04rem;
-          font-size: 0.26rem;
-          background: #0493d3;
-          color: #ffffff;
           display: flex;
-          justify-content: center;
           align-items: center;
-          cursor: pointer;
+          .generate_test_paper {
+            margin-right: 0.2rem;
+            width: 1.5rem;
+            height: 0.5rem;
+            border-radius: 0.04rem;
+            font-size: 0.26rem;
+            background: #0493d3;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+          }
+          .cancle {
+            width: 1rem;
+            height: 0.5rem;
+            border-radius: 0.04rem;
+            font-size: 0.26rem;
+            background: #0493d3;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+          }
         }
       }
     }

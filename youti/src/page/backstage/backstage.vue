@@ -1,5 +1,10 @@
 <template>
 	<div class="backstage">
+    <div class="backstage_head">
+      <img src="../../assets/images/logo.jpg" />
+      <div class="title">优题网</div>
+      <div class="desc">后台管理系统</div>
+    </div>
     <div class="backstage_side">
       <img src="../../assets/images/avatar_default.png" />
       <div class="user_name">{{ userInfo.name }}</div>
@@ -88,10 +93,39 @@ export default {
 }
 
 .backstage {
-  width: 100%;
-  height: 100%;
+  padding-top: 0.8rem;
+  padding-left: 10%;
+
+  .backstage_head {
+    z-index: 998;
+    position: fixed;
+    top: 0;
+    left: 10%;
+    width: 90%;
+    height: 0.8rem;
+    background: #3d444c;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    color: #fff;
+    img {
+      width: 0.8rem;
+      height: 0.8rem;
+    }
+    .title {
+      margin-left: 0.5rem;
+      font-size: 0.55rem;
+      font-weight: bold;
+    }
+    .desc {
+      margin-left: 0.3rem;
+      font-size: 0.4rem;
+      font-weight: bold;
+    }
+  }
 
   .backstage_side {
+    z-index: 1000;
     position: fixed;
     top: 0;
     left: 0;
@@ -123,8 +157,7 @@ export default {
   }
 
   .backstage_body {
-    margin-left: 10%;
-    width: 90%;
+    width: 100%;
     height: 100%;
   }
 }

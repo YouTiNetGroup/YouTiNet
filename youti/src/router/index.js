@@ -20,8 +20,10 @@ import Backstage from 'src/page/backstage/backstage.vue'
 import BackstageHome from 'src/page/backstage/home.vue'
 import UserManage from 'src/page/backstage/userManage.vue'
 import TestPaperManage from 'src/page/backstage/testPaperManage.vue'
+import BackTestPaperDetail from 'src/page/center/testPaperDetail.vue'
 import QuestionManage from 'src/page/backstage/questionManage.vue'
-
+import BackQuestionDetail from 'src/page/home/questionDetail.vue'
+import AddQuestion from 'src/page/backstage/addQuestion.vue'
 
 Vue.use(VueRouter);
 
@@ -139,9 +141,24 @@ export const router = new VueRouter({
           component: TestPaperManage
         },
         {
+          path: 'testPaperDetail/:test_paper_id',//试卷详情
+          name: 'backTestPaperDetail',
+          component: BackTestPaperDetail
+        },
+        {
           path:'question',//题库管理
           name: 'questionManage',
           component: QuestionManage
+        },
+        {
+          path:'questionDetail/:question_id',//题目详情
+          name: 'backQuestionDetail',
+          component: BackQuestionDetail
+        },
+        {
+          path:'addQuestion',//添加题目
+          name: 'addQuestion',
+          component: AddQuestion
         },
       ]
     }

@@ -9,13 +9,13 @@
         </div>
       </div>
       <div class="body">
-        <div class="name_container">
+        <div class="account_container">
           <div class="account_icon">
             <svg id="account-icon">
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-login-account" />
             </svg>
           </div>
-          帐号：<input class="name" v-model="userAccount" type="search" placeholder="请输入帐号" @keyup.enter="checkLogin" />
+          帐号：<input class="account" v-model="userAccount" placeholder="请输入帐号" @keyup.enter="checkLogin" />
         </div>
         <div v-show="showAccountNullError" class="error_prompt">帐号不能为空!</div>
         <div class="password_container">
@@ -24,11 +24,11 @@
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-login-lock" />
             </svg>
           </div>
-          密码：<input class="password" v-model="password" type="search" placeholder="请输入密码" @keyup.enter="checkLogin" />
+          密码：<input class="password" v-model="password" type="password" placeholder="请输入密码" @keyup.enter="checkLogin" />
         </div>
         <div v-show="showPswNullError" class="error_prompt">密码不能为空!</div>
         <div class="password_container">
-          确认密码：<input class="password" v-model="confirmPsw" type="search" placeholder="请再次输入密码" @keyup.enter="checkRegister" />
+          确认密码：<input class="password" v-model="confirmPsw" type="password" placeholder="请再次输入密码" @keyup.enter="checkRegister" />
         </div>
         <div v-show="showConfirmPwsError" class="error_prompt">与第一次输入的密码不一致!</div>
         <div class="login_text" @click="gotoLogin">已有帐号? 立即去登录!</div>
@@ -94,14 +94,15 @@ export default {
         this.showConfirmPwsError = true;
         return;
       }
-      let userInfo = await AccountService.userRegister({
-        account: this.userAccount,
-        password: this.password
+      let response = await AccountService.userRegister({
+        account_id: this.userAccount,
+        password: this.password,
+        privilege: "admin"
       });
-      if(userInfo) {
-        this.$router.push("/home");
+      if(response && response.isSuccess) {
+        this.$router.push("/page/home");
       } else {
-        this.$toast.text("该帐号已注册");
+        this.$toast.text(response.message);
       }
     }
   }
@@ -148,7 +149,7 @@ export default {
       flex-direction: column;
       align-items: center;
 
-      .name_container {
+      .account_container {
         font-size: 0.2rem;
         display: flex;
         justify-content: space-between;
@@ -166,11 +167,11 @@ export default {
           }
         }
 
-        .name {
-          width: 3.2rem;
-          height: 0.3rem;
+        .account {
+          width: 3rem;
+          height: 0.35rem;
           padding: 0 0.06rem;
-          font-size: 0.13rem;
+          font-size: 0.16rem;
           letter-spacing: 0.02rem;
         }
       }
@@ -195,10 +196,10 @@ export default {
         }
 
         .password {
-          width: 3.2rem;
-          height: 0.3rem;
+          width: 3rem;
+          height: 0.35rem;
           padding: 0 0.06rem;
-          font-size: 0.13rem;
+          font-size: 0.16rem;
           letter-spacing: 0.02rem;
         }
       }

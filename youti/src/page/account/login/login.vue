@@ -15,7 +15,7 @@
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-login-account" />
             </svg>
           </div>
-          帐号：<input class="account" v-model="userAccount" type="search" placeholder="请输入帐号" @keyup.enter="checkLogin" />
+          帐号：<input class="account" v-model="userAccount" placeholder="请输入帐号" @keyup.enter="checkLogin" />
         </div>
         <div v-show="showAccountNullError" class="error_prompt">帐号不能为空!</div>
         <div class="password_container">
@@ -24,7 +24,7 @@
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-login-lock" />
             </svg>
           </div>
-          密码：<input class="password" v-model="password" type="search" placeholder="请输入密码" @keyup.enter="checkLogin" />
+          密码：<input class="password" v-model="password" type="password" placeholder="请输入密码" @keyup.enter="checkLogin" />
         </div>
         <div v-show="showPswNullError" class="error_prompt">密码不能为空!</div>
         <div class="login_text" @click="gotoRegister">没有帐号? 立即去注册！</div>
@@ -76,14 +76,15 @@ export default {
         this.showPswNullError = true;
         return;
       }
-      let userInfo = await AccountService.userlogin({
-        account: this.userAccount,
-        password: this.password
+      let response = await AccountService.userlogin({
+        account_id: this.userAccount,
+        password: this.password,
+        privilege: "admin"
       });
-      if(userInfo) {
-        this.$router.push("/home");
+      if(response && response.isSuccess) {
+        this.$router.push("/page/home");
       } else {
-        this.$toast.text("帐号或密码错误");
+        this.$toast.text(response.message);
       }
     }
   }
@@ -148,10 +149,10 @@ export default {
         }
 
         .account {
-          width: 3.2rem;
-          height: 0.3rem;
+          width: 3rem;
+          height: 0.35rem;
           padding: 0 0.06rem;
-          font-size: 0.13rem;
+          font-size: 0.16rem;
           letter-spacing: 0.02rem;
         }
       }
@@ -176,10 +177,10 @@ export default {
         }
 
         .password {
-          width: 3.2rem;
-          height: 0.3rem;
+          width: 3rem;
+          height: 0.35rem;
           padding: 0 0.06rem;
-          font-size: 0.13rem;
+          font-size: 0.16rem;
           letter-spacing: 0.02rem;
         }
       }

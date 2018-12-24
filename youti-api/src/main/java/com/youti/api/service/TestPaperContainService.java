@@ -7,11 +7,11 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.youti.api.bean.QuestionBean;
-import com.youti.api.bean.QuestionTypeBean;
 import com.youti.api.bean.TestPaperContainBean;
 import com.youti.api.repository.TestPaperContainRepository;
 
@@ -26,7 +26,6 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public void save(TestPaperContainBean testPaperContainBean) {
-		//TODO
 		testPaperContainRepository.save(testPaperContainBean);
 	}
 	
@@ -36,7 +35,6 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public void saveAll(List<TestPaperContainBean> list) {
-		//TODO
 		testPaperContainRepository.saveAll(list);
 	}
 	
@@ -46,7 +44,6 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public void deleteById(int id) {
-		//TODO
 		testPaperContainRepository.deleteById(id);
 	}
 	
@@ -56,7 +53,6 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public void deleteAllList(List<TestPaperContainBean> list) {
-		//TODO
 		testPaperContainRepository.deleteInBatch(list);
 	}
 	
@@ -66,7 +62,6 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public void deleteByQuestionId(int question_id) {
-		//TODO
 		List<TestPaperContainBean> list = new ArrayList<TestPaperContainBean>();
 		Iterator<TestPaperContainBean> iterator = testPaperContainRepository.findAll().iterator();
 		TestPaperContainBean temp = null;
@@ -86,7 +81,6 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public void deleteByTestPaperId(int test_paper_id) {
-		//TODO
 		List<TestPaperContainBean> list = new ArrayList<TestPaperContainBean>();
 		Iterator<TestPaperContainBean> iterator = testPaperContainRepository.findAll().iterator();
 		TestPaperContainBean temp = null;
@@ -106,7 +100,6 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public void updateQuestionById(int id,int question_id) {
-		//TODO
 		Optional<TestPaperContainBean> sessionTestPaperContain= testPaperContainRepository.findById(id);
 		sessionTestPaperContain.get().setQuestion_id(question_id);
 		testPaperContainRepository.save(sessionTestPaperContain.get());
@@ -118,7 +111,6 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public void updateTestPaperById(int id,int test_paper_id) {
-		//TODO
 		Optional<TestPaperContainBean> sessionTestPaperContain= testPaperContainRepository.findById(id);
 		sessionTestPaperContain.get().setTest_paper_id(test_paper_id);
 		testPaperContainRepository.save(sessionTestPaperContain.get());
@@ -130,11 +122,23 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public void updateSetScoreById(int id,int set_score) {
-		//TODO
 		Optional<TestPaperContainBean> sessionTestPaperContain= testPaperContainRepository.findById(id);
 		sessionTestPaperContain.get().setSet_score(set_score);
 		testPaperContainRepository.save(sessionTestPaperContain.get());
 	}
+	
+	/**
+	 * 根据id修改 所属大题题号,小题题号
+	 * @param id,question_number
+	 * */
+	@Transactional
+	public void updateSetQuestionNumberById(int id,int question_number,int question_number_2) {
+		Optional<TestPaperContainBean> sessionTestPaperContain= testPaperContainRepository.findById(id);
+		sessionTestPaperContain.get().setQuestion_number(question_number);
+		sessionTestPaperContain.get().setQuestion_number_2(question_number_2);
+		testPaperContainRepository.save(sessionTestPaperContain.get());
+	}
+	
 	
 	/**
 	 * 根据id查找试卷包含
@@ -142,8 +146,12 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public TestPaperContainBean findById(int id) {
-		//TODO
-		return testPaperContainRepository.findById(id).get();
+		Optional<TestPaperContainBean> testPaperContainOptional = testPaperContainRepository.findById(id);
+		if(testPaperContainOptional.isPresent()) {
+			return testPaperContainOptional.get();
+		}
+		
+		return null;
 	}
 	
 
@@ -152,8 +160,15 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public List<TestPaperContainBean> findAll() {
-		//TODO
 		return testPaperContainRepository.findAll();
+	}
+	
+	/**
+	 * 分页查找所有试卷包含
+	 * */
+	@Transactional
+	public Page<TestPaperContainBean> findAll(Pageable pageable) {
+		return testPaperContainRepository.findAll(pageable);
 	}
 	
 	/**
@@ -162,7 +177,6 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public List<TestPaperContainBean> findByTestPaperId(int test_paper_id) {
-		//TODO
 		List<TestPaperContainBean> list = new ArrayList<TestPaperContainBean>();
 		Iterator<TestPaperContainBean> iterator = testPaperContainRepository.findAll().iterator();
 		TestPaperContainBean temp = null;
@@ -182,7 +196,6 @@ public class TestPaperContainService {
 	 * */
 	@Transactional
 	public List<TestPaperContainBean> findByQuestionId(int question_id) {
-		//TODO
 		List<TestPaperContainBean> list = new ArrayList<TestPaperContainBean>();
 		Iterator<TestPaperContainBean> iterator = testPaperContainRepository.findAll().iterator();
 		TestPaperContainBean temp = null;

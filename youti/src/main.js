@@ -10,7 +10,6 @@ import toast from './plugins/toast/toast';
 import svgIcon from './components/common/svgIcon' // svg组件
 import "src/assets/style/main.css";
 import './assets/js/rem'
-
 import 'element-ui/lib/theme-chalk/index.css';    // 默认主题
 
 Vue.prototype.$axios = axios;
@@ -28,8 +27,6 @@ const req = require.context('./assets/icons', true, /\.svg$/)
 requireAll(req)
 
 export const vueInstance = new Vue({
-  el: '#app',
   router,
-  components: { App },
-  template: '<App/>'
-});
+  render: h => h(App)
+}).$mount('#app');

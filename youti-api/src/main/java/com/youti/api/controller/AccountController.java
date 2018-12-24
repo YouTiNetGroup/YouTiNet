@@ -58,7 +58,7 @@ public class AccountController {
 	}
 	
 	/**
-	 * 创建新账号
+	 * 创建新账号 
 	 * */
 	@RequestMapping("/create")
 	@ResponseBody

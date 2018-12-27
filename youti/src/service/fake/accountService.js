@@ -102,14 +102,6 @@ export const FakeAccountService = {
     });
   },
 
-  // modifyUserInformation: (userInfo) => {
-  //   return Promise.resolve({
-  //     isSuccess: true,
-  //     message: "成功",
-  //     data: ""
-  //   });
-  // },
-
   deleteUserByAccountId: (account_id) => {
     return Promise.resolve({
       isSuccess: true,

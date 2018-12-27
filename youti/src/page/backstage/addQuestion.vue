@@ -271,18 +271,6 @@ export default {
     preview(form) {
       this.$refs[form].validate(async (valid) => {
         if (valid) {
-          if(!this.subject_id) {
-            this.$toast.text("请选择科目");
-            return;
-          }
-          if(!this.knowledge_point_id) {
-            this.$toast.text("请选择知识点");
-            return;
-          }
-          if(!this.difficulty_degree) {
-            this.$toast.text("请选择难度");
-            return;
-          }
           this.isPreview = true;
           let content = this.form.content.replace(/</g, "&lt;");
           content = content.replace(/>/g, "&gt;");

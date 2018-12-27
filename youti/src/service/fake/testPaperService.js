@@ -39,7 +39,7 @@ export const FakeTestPaperService = {
     });
   },
 
-  modifyTestPaper: (testPaper) => {
+  modifyTestPaperInformation: (testPaper) => {
     return Promise.resolve({
       isSuccess: true,
       message: "成功",
@@ -117,13 +117,5 @@ export const FakeTestPaperService = {
           },
         ]
     });
-  },
-
-  modifyTestPaperInformation: (testPaper) => {
-    return Promise.resolve({
-      isSuccess: true,
-      message: "成功",
-      data: ""
-    });
-  },
+  }
 }

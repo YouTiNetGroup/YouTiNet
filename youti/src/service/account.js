@@ -25,10 +25,6 @@ const API = {
     url: "/account/getAllUsers",
     useFake: true
   },
-  // modifyUserInformation: {
-  //   url: "/account/modifyUserInformation",
-  //   useFake: true
-  // },
   deleteUserByAccountId: {
     url: "/account/deleteUserByAccountId",
     useFake: true
@@ -167,16 +163,6 @@ const getAllUsers = () => {
     return request(API.getAllUsers.url, {}, 'GET');
   }
 };
-
-// const modifyUserInformation = (userInfo) => {
-//   if (API.modifyUserInformation.useFake) {
-//     return FakeAccountService.modifyUserInformation(userInfo);
-//   } else {
-//     return request(API.modifyUserInformation.url, {
-//       userInfo
-//     }, 'POST');
-//   }
-// };
 
 const deleteUserByAccountId = (account_id) => {
   if (API.deleteUserByAccountId.useFake) {

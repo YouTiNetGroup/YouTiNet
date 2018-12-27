@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter  from 'vue-router'
 import Login from 'src/page/account/login/login.vue'
 import Register from 'src/page/account/register/register.vue'
-import Upload from 'src/page/upload/upload.vue'
 import Page from 'src/page/home/page.vue'
 import Home from 'src/page/home/home.vue'
 import AutoGeneration from 'src/page/home/autoGeneration.vue'
@@ -42,11 +41,6 @@ export const router = new VueRouter({
       path:'/register',//注册
       name: 'register',
 			component: Register
-    },
-    {
-      path:'/upload',//上传
-      name: 'upload',
-			component: Upload
     },
     {
       path: '/page',

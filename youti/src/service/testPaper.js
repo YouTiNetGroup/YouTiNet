@@ -10,7 +10,7 @@ const API = {
     useFake: true
   },
   modifyTestPaperInformation: {
-    url: "/account/modifyTestPaperInformation",
+    url: "/testPaper/modifyTestPaperInformation",
     useFake: true
   },
   exportTestPaperById: {
@@ -18,7 +18,7 @@ const API = {
     useFake: true
   },
   deleteTestPaperById: {
-    url: "/account/deleteTestPaperById",
+    url: "/testPaper/deleteTestPaperById",
     useFake: true
   },
   autoGenerateTestPaper: {
@@ -30,7 +30,7 @@ const API = {
     useFake: true
   },
   getAllTestPapers: {
-    url: "/account/getAllTestPapers",
+    url: "/testPaper/getAllTestPapers",
     useFake: true
   },
 }

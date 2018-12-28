@@ -49,7 +49,7 @@ public class SubjectController {
 	/**
 	 * 获取学科列表
 	 * */
-	@RequestMapping("/get")
+	@RequestMapping("/getAll")
 	@ResponseBody
 	public RespEntity getSubjectList() {
 		List<SubjectBean> subjectList = subjectService.findAll();

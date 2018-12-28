@@ -1,0 +1,567 @@
+<!DOCTYPE html [<!ENTITY nbsp " ">]>
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>试卷导出</title>
+    <style type="text/css">
+	@page {
+	  size:210mm 297mm;
+	}
+
+	.subject-des li {
+		list-style-type: upper-alpha;
+		list-style-position: inside;
+		margin: 10px 0;
+		word-break: break-all;
+		word-wrap: break-word;
+	}
+    </style>
+	 <style type="text/css">
+    html,body,div,span,p,code,ul,li {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+    body {
+      width: 680px;
+      margin: auto;
+    }
+    .test_paper_container {
+      font-size: 16px;
+      padding-top: 24px; 
+    }
+    .test_paper_container .head {
+      width: 100%;
+    }
+    .test_paper_container .head .title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .test_paper_container .head .detail {
+      width: 89%;
+      margin: 16px auto;
+    }
+    .head .detail .common_deatil {
+      width: 100%;
+      margin: auto;
+    }
+    .head .detail .common_deatil span {
+      margin-right: 48px;
+      display: inline-block;
+    }
+    .common_deatil .school_year {
+      text-align: left !important;
+    }
+    .common_deatil .total_score {
+      margin-right: 0 !important;
+      text-align: right !important;
+    }
+    .head .detail .student_detail {
+      margin-top: 12px;
+      width: 100%;
+    }
+    .student_detail .class {
+      margin-right: 50px;
+      display: inline-block;
+      text-align: left !important;
+    }
+    .student_detail .student_number {
+      margin-right: 50px;
+      display: inline-block;
+    }
+    .student_detail .student_name {
+      display: inline-block;
+      margin-right: 0 !important;
+      text-align: right !important;
+    }
+    .test_paper_container .body {
+      margin: 8px 30px;
+    }
+    .big_question_container {
+      width: 100%;
+    }
+    .big_question_type {
+      margin: 8px 8px 0 8px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .small_questions_container {
+      margin: 8px 0;
+      width: 100%;
+    }
+    .question_container {
+      margin: 8px;
+      font-size: 16px;
+      line-height: 20px;
+    }
+    .question_detail {
+      display: inline-block;
+      vertical-align: top;
+    }
+    .question_detail .no {
+      display: inline-block;
+      vertical-align: top;
+    }
+    .question_detail .question {
+      display: inline-block;
+      max-width: 500px;
+    }
+    .score {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body style = "font-family: SimSun;">
+
+  <div class="test_paper_container">
+    <div class="head">
+      <div class="title">测试2</div>
+      <div class="detail">
+        <div class="common_deatil">
+          <span class="school_year">学年：2018-2019</span>
+          <span class="semester">学期：第2学期</span>
+          <span class="subject_name">科目：算法</span>
+          <span class="total_score">满分：100分</span>
+        </div>
+        <div class="student_detail">
+          <span class="class">班级：<span>______________</span></span>
+          <span class="student_number">学号：<span>______________</span></span>
+          <span class="student_name">姓名：<span>______________</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="big_question_container">
+	  
+	    <!--  1  -->
+        <div class="big_question_type">1、单选题</div>
+		
+        <div class="small_questions_container">
+		<!--  1.1  -->
+          <div class="question_container">
+            <div class="question_detail">
+              <div class="no">1.</div>
+              <div class="question">
+                <div class="subject-des"><div>对线性表进行折半查找时,要求线性表必须()<ul><li>以顺序方式存储</li><li>以顺序方式存储,且数据元素有序</li><li>以链接方式存储</li><li>以链接方式存储,且数据元素有序</li><ul></ul></ul></div></div>
+              </div>
+            </div>
+            <div class="score">(10分)</div>
+          </div>
+		  <!--  1.2  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no">2.</div>
+              <div class="question">
+                <div class="subject-des"><div>折半查找法的查找速度一定比顺序查找法快()<ul><li>对</li><li>错</li><ul></ul></ul></div></div>
+              </div>
+            </div>
+            <div class="score">(10分)</div>
+          </div>
+		  <!--  1.3  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no">3.</div>
+              <div class="question">
+                <div class="subject-des"><div>二分查找的时间复杂度（ ）<ul><li>O(N*log(N))</li><li>O(N)</li><li>O(log(N))</li><li>O(N^2)</li><ul></ul></ul></div></div>
+              </div>
+            </div>
+            <div class="score">(10分)</div>
+          </div>
+		  <!--  1.4  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no">4.</div>
+              <div class="question">
+                <div class="subject-des"><div>查找n个元素的有序表时,最有效的查找方法是()<ul><li>顺序查找</li><li>分块查找</li><li>折半查找</li><li>二叉排序树</li><ul></ul></ul></div></div>
+              </div>
+            </div>
+            <div class="score">(10分)</div>
+          </div>
+		  <!--  1.5  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no">5.</div>
+              <div class="question">
+                <div class="subject-des"><div>能用二分法进行查找的是<ul><li>顺序存储的有序线性表</li><li>线性链表</li><li>二叉链表</li><li>有序线性链表</li><ul></ul></ul></div></div>
+              </div>
+            </div>
+            <div class="score">(10分)</div>
+          </div>
+		  <!--  1.6  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  1.7  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  1.8  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  1.9  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  1.10  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		</div>
+		
+		<!--  2  -->
+        <div class="big_question_type">2、解答题</div>
+		
+        <div class="small_questions_container">
+		<!--  2.1  -->
+          <div class="question_container">
+            <div class="question_detail">
+              <div class="no">1.</div>
+              <div class="question">
+                <div class="subject-des"><div>给定一个字符串，请写一段代码找出这个字符串中首先出现两次的那个字符。 例如字符串为”qywyer23tdd“，输出为y。</div></div>
+              </div>
+            </div>
+            <div class="score">(50分)</div>
+          </div>
+		  <!--  2.2  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  2.3  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  2.4  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  2.5  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  2.6  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  2.7  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  2.8  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  2.9  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  2.10  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		</div>
+		
+		<!--  3  -->
+        <div class="big_question_type"></div>
+		
+        <div class="small_questions_container">
+		<!--  3.1  -->
+          <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  3.2  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  3.3  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  3.4  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  3.5  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  3.6  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  3.7  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  3.8  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  3.9  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  3.10  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		</div>
+		  
+		  <!--  4  -->
+        <div class="big_question_type"></div>
+		
+        <div class="small_questions_container">
+		<!--  4.1  -->
+          <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  4.2  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  4.3  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  4.4  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  4.5  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  4.6  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  4.7  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  4.8  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  4.9  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>
+		  <!--  4.10  -->
+		  <div class="question_container">
+            <div class="question_detail">
+              <div class="no"></div>
+              <div class="question">
+                <div class="subject-des"></div>
+              </div>
+            </div>
+            <div class="score"></div>
+          </div>				
+      </div>
+	  
+	  
+    </div>
+  </div>
+  </div>
+
+</body>
+</html>

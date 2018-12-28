@@ -1,6 +1,7 @@
 package com.youti.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -14,105 +15,100 @@ import com.youti.api.bean.AccountBean;
 import com.youti.api.service.AccountService;
 import com.youti.api.utils.RespEntity;
 
-
 /**
- * 账号管理(管理员)
- * */
+ * 账号管理
+ */
 @RestController
 @RequestMapping("/account")
 @CrossOrigin
 public class AccountController {
 	@Resource
 	private AccountService accountService;
-	
+
 	/**
-	 * 获取单个账号信息
-	 * */
-	@RequestMapping("/get")
+	 * 获取用户信息
+	 */
+	@RequestMapping("/getUserInformation")
 	@ResponseBody
-	public RespEntity getAcoountMessage(@RequestBody AccountBean accountBean) {
+	public RespEntity getUserInformation(@RequestBody Map<String, String> params) {
 		RespEntity respEntity = new RespEntity();
-		
-		AccountBean account = accountService.findById(accountBean.getAccount_id());
-		if(account == null) {
+		String account_id = params.get("account_id");
+
+		AccountBean account = accountService.findById(account_id);
+		if (account == null) {
 			respEntity.setIsSuccess(false);
 			respEntity.setMessage("账号不存在");
-		}else {
+		} else {
 			respEntity.setIsSuccess(true);
 			respEntity.setMessage("成功");
 			respEntity.setData(account);
 		}
 		return respEntity;
 	}
-	
-	
-	/**
-	 * 获取账号列表
-	 * */
-	@RequestMapping("/list")
-	@ResponseBody
-	public RespEntity getAccountList(){
-		List<AccountBean> accountList = accountService.findAll();
-		RespEntity respEntity = new RespEntity(true,accountList,"成功");
-		return respEntity;
-	}
-	
-	/**
-	 * 创建新账号 
-	 * */
-	@RequestMapping("/create")
-	@ResponseBody
-	public RespEntity createAccount(@RequestBody AccountBean accountBean) {
-		RespEntity respEntity = new RespEntity();
-		
-		if(accountService.findById(accountBean.getAccount_id()) != null) {
-			respEntity.setIsSuccess(false);
-			respEntity.setMessage("账号已经存在");
-		}else {
-			accountService.save(accountBean);
-			respEntity.setIsSuccess(true);
-			respEntity.setMessage("账号创建成功");
-		}
-		return respEntity;
-	}
-	
-	/**
-	 * 删除账号
-	 * */
-	@RequestMapping("/delete")
-	@ResponseBody
-	public RespEntity deleteAccount(@RequestBody AccountBean accountBean) {
-		RespEntity respEntity = new RespEntity();
 
-		if(accountService.findById(accountBean.getAccount_id()) == null) {
+	/**
+	 * 获取所有用户信息
+	 */
+	@RequestMapping("/getAllUsers")
+	@ResponseBody
+	public RespEntity getAllUsers() {
+		List<AccountBean> accountList = accountService.findAll();
+		RespEntity respEntity = new RespEntity(true, accountList, "成功");
+		return respEntity;
+	}
+
+	/**
+	 * 创建新账号 //
+	 */
+	/*
+	 * @RequestMapping("/create")
+	 * 
+	 * @ResponseBody public RespEntity createAccount(@RequestBody AccountBean
+	 * accountBean) { RespEntity respEntity = new RespEntity();
+	 * 
+	 * if (accountService.findById(accountBean.getAccount_id()) != null) {
+	 * respEntity.setIsSuccess(false); respEntity.setMessage("账号已经存在"); } else {
+	 * accountService.save(accountBean); respEntity.setIsSuccess(true);
+	 * respEntity.setMessage("账号创建成功"); } return respEntity; }
+	 */
+
+	/**
+	 * 删除用户信息
+	 */
+	@RequestMapping("/deleteUserByAccountId")
+	@ResponseBody
+	public RespEntity deleteUserByAccountId(@RequestBody Map<String, String> params) {
+		RespEntity respEntity = new RespEntity();
+		String account_id = params.get("account_id");
+
+		if (accountService.findById(account_id) == null) {
 			respEntity.setIsSuccess(false);
 			respEntity.setMessage("账号不存在");
-		}else {
-			accountService.deleteById(accountBean.getAccount_id());
+		} else {
+			accountService.deleteById(account_id);
 			respEntity.setIsSuccess(true);
 			respEntity.setMessage("账号删除成功");
 		}
 		return respEntity;
 	}
-	
+
 	/**
-	 * 修改账号信息
-	 * */
-	@RequestMapping("/modify")
+	 * 更新用户信息
+	 */
+	@RequestMapping("/updateUserInformation")
 	@ResponseBody
-	public RespEntity modifyAccount(@RequestBody AccountBean accountBean) {
+	public RespEntity updateUserInformation(@RequestBody AccountBean accountBean) {
 		RespEntity respEntity = new RespEntity();
-		
-		if(accountService.findById(accountBean.getAccount_id()) == null) {
+
+		if (accountService.findById(accountBean.getAccount_id()) == null) {
 			respEntity.setIsSuccess(false);
 			respEntity.setMessage("账号不存在");
-		}else {
+		} else {
 			accountService.save(accountBean);
 			respEntity.setIsSuccess(true);
-			respEntity.setMessage("账号信息修改成功");
+			respEntity.setMessage("用户信息更新成功");
 		}
 		return respEntity;
 	}
-	
-	
+
 }

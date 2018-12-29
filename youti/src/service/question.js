@@ -8,37 +8,37 @@ import { FakeQuestionService } from "./fake/questionService.js";
 const API = {
   getAllQuestions: {
     url: "/question/getAllQuestions",
-    useFake: true
+    useFake: false
   },
   getQuestionByTestPaperId: {
     url: "/question/getQuestionByTestPaperId",
-    useFake: true
+    useFake: false
   },
   addQuestion: {
     url: "/question/addQuestion",
-    useFake: true
+    useFake: false
   },
   modifyQuestionInformation: {
     url: "/question/modifyQuestionInformation",
-    useFake: true
+    useFake: false
   },
   deleteQuestionById: {
     url: "/question/deleteQuestionById",
-    useFake: true
+    useFake: false
   },
 }
 
 export const QuestionService = {
   getAllOfQuestions: async () => {
-    let response = await getAllQuestions();
+    let response = (await getAllQuestions()).data;
     if (!response || !response.isSuccess || !response.data) {
       return;
     }
     return response.data;
   },
 
-  getTestPaperQuestions: async (question_id) => {
-    let response = await getQuestionByTestPaperId(question_id);
+  getTestPaperQuestions: async (test_paper_id) => {
+    let response = (await getQuestionByTestPaperId(test_paper_id)).data;
     if (!response || !response.isSuccess || !response.data) {
       return;
     }
@@ -90,17 +90,17 @@ export const QuestionService = {
   },
 
   addNewQuestion: async (question) => {
-    let response = await addQuestion(question);
+    let response = (await addQuestion(question)).data;
     return response;
   },
 
   modifyQuestion: async (question) => {
-    let response = await modifyQuestionInformation(question);
+    let response = (await modifyQuestionInformation(question)).data;
     return response;
   },
 
   deleteQuestion: async (question_id) => {
-    let response = await deleteQuestionById(question_id);
+    let response = (await deleteQuestionById(question_id)).data;
     return response;
   },
 
@@ -148,12 +148,12 @@ const getAllQuestions = () => {
 /**
  * 获取试卷的题目
  */
-const getQuestionByTestPaperId = (question_id) => {
+const getQuestionByTestPaperId = (test_paper_id) => {
   if (API.getQuestionByTestPaperId.useFake) {
-    return FakeQuestionService.getQuestionByTestPaperId(question_id);
+    return FakeQuestionService.getQuestionByTestPaperId(test_paper_id);
   } else {
     return request(API.getQuestionByTestPaperId.url, {
-      question_id
+      test_paper_id
     }, 'GET');
   }
 };
@@ -165,9 +165,7 @@ const addQuestion = (question) => {
   if (API.addQuestion.useFake) {
     return FakeQuestionService.addQuestion(question);
   } else {
-    return request(API.addQuestion.url, {
-      question
-    }, 'POST');
+    return request(API.addQuestion.url, question, 'POST');
   }
 };
 
@@ -178,9 +176,7 @@ const modifyQuestionInformation = (question) => {
   if (API.modifyQuestionInformation.useFake) {
     return FakeQuestionService.modifyQuestionInformation(question);
   } else {
-    return request(API.modifyQuestionInformation.url, {
-      question
-    }, 'POST');
+    return request(API.modifyQuestionInformation.url, question, 'POST');
   }
 };
 

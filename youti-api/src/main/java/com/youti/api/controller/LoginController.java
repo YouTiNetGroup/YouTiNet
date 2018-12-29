@@ -1,6 +1,5 @@
 package com.youti.api.controller;
 
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
@@ -17,34 +16,32 @@ import com.youti.api.utils.RespEntity;
 
 /**
  * 登录
- * */
+ */
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/account")
 @CrossOrigin
 public class LoginController {
 	@Resource
 	private AccountService accountService;
-	
+
 	/**
 	 * 登录验证
-	 * */
-	@PostMapping("/verify")
+	 */
+	@PostMapping("/login")
 	@ResponseBody
-    public RespEntity loginVerify(@RequestBody AccountBean accountBean, HttpSession session){
+	public RespEntity login(@RequestBody AccountBean accountBean, HttpSession session) {
 		RespEntity respEntity = new RespEntity();
 
-        boolean verify = accountService.verify(accountBean);
-        if (verify) {
-        	session.setAttribute("account_id", accountBean.getAccount_id());
-        	respEntity.setIsSuccess(true);
-        	respEntity.setMessage("登录验证成功");
-        } else {
-        	respEntity.setIsSuccess(false);
-        	respEntity.setMessage("登录验证失败");
-        }
-        return respEntity;
-    }
-
-
+		boolean verify = accountService.verify(accountBean);
+		if (verify) {
+			session.setAttribute("account_id", accountBean.getAccount_id());
+			respEntity.setIsSuccess(true);
+			respEntity.setMessage("登录成功");
+		} else {
+			respEntity.setIsSuccess(false);
+			respEntity.setMessage("登录失败");
+		}
+		return respEntity;
+	}
 
 }

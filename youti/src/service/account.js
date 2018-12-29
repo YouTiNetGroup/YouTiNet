@@ -7,27 +7,27 @@ import { FakeAccountService } from "./fake/accountService.js";
 const API = {
   login: {
     url: "/account/login",
-    useFake: true
+    useFake: false
   },
   register: {
     url: "/account/register",
-    useFake: true
+    useFake: false
   },
   getUserInformation: {
     url: "/account/getUserInformation",
-    useFake: true
+    useFake: false
   },
   updateUserInformation: {
     url: "/account/updateUserInformation",
-    useFake: true
+    useFake: false
   },
   getAllUsers: {
     url: "/account/getAllUsers",
-    useFake: true
+    useFake: false
   },
   deleteUserByAccountId: {
     url: "/account/deleteUserByAccountId",
-    useFake: true
+    useFake: false
   },
 }
 
@@ -41,7 +41,7 @@ export const AccountService = {
   },
 
   userlogin: async (params) => {
-    let response = await login(params.account_id, params.password, params.privilege);
+    let response = (await login(params.account_id, params.password, params.privilege)).data;
     if (!response || !response.isSuccess) {
       return response;
     }
@@ -50,7 +50,7 @@ export const AccountService = {
   },
 
   userRegister: async (params) => {
-    let response = await register(params.account_id, params.password, params.privilege);
+    let response = (await register(params.account_id, params.password, params.privilege)).data;
     if (!response || !response.isSuccess) {
       return response;
     }
@@ -59,7 +59,7 @@ export const AccountService = {
   },
 
   saveUserInfo: async (account_id) => {
-    let response = await getUserInformation(account_id);
+    let response = (await getUserInformation(account_id)).data;
     if (!response || !response.isSuccess || !response.data) {
       return response;
     }
@@ -72,16 +72,16 @@ export const AccountService = {
   },
 
   updateUser: async (userInfo) => {
-    let response = await updateUserInformation(userInfo);
+    let response = (await updateUserInformation(userInfo)).data;
     if (!response || !response.isSuccess) {
       return response;
     }
-    store.dispatch('auth/updateUserInformation', userInfo);
+    store.dispatch('auth/updateUserInfo', userInfo);
     return response;
   },
 
   getAllOfUsers: async () => {
-    let response = await getAllUsers();
+    let response = (await getAllUsers()).data;
     if (!response || !response.isSuccess || !response.data) {
       return;
     }
@@ -89,12 +89,12 @@ export const AccountService = {
   },
 
   modifyUser: async (userInfo) => {
-    let response = await updateUserInformation(userInfo);
+    let response = (await updateUserInformation(userInfo)).data;
     return response;
   },
 
   deleteUser: async (account_id) => {
-    let response = await deleteUserByAccountId(account_id);
+    let response = (await deleteUserByAccountId(account_id)).data;
     return response;
   },
 
@@ -150,9 +150,7 @@ const updateUserInformation = (userInfo) => {
   if (API.updateUserInformation.useFake) {
     return FakeAccountService.updateUserInformation(userInfo);
   } else {
-    return request(API.updateUserInformation.url, {
-      userInfo
-    }, 'POST');
+    return request(API.updateUserInformation.url, userInfo, 'POST');
   }
 };
 

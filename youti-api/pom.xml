@@ -40,10 +40,14 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+        
+        <!-- 权限
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+		-->
+		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -90,12 +94,12 @@
 		<dependency>  
 			<groupId>com.itextpdf</groupId>  
             <artifactId>itextpdf</artifactId>  
-            <version>5.5.9</version>
+            <version>5.5.0</version>
         </dependency>  
         <dependency>  
         	<groupId>com.itextpdf.tool</groupId>  
             <artifactId>xmlworker</artifactId>  
-            <version>5.5.9</version>
+            <version>5.5.0</version>
         </dependency>  
         <dependency>  
         	<groupId>com.itextpdf</groupId>  

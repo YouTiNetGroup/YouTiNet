@@ -7,37 +7,37 @@ import { FakeTestPaperService } from "./fake/testPaperService.js";
 const API = {
   getTestPapersByAccountId: {
     url: "/testPaper/getTestPapersByAccountId",
-    useFake: true
+    useFake: false
   },
   modifyTestPaperInformation: {
     url: "/testPaper/modifyTestPaperInformation",
-    useFake: true
+    useFake: false
   },
   exportTestPaperById: {
     url: "/testPaper/exportTestPaperById",
-    useFake: true
+    useFake: false
   },
   deleteTestPaperById: {
     url: "/testPaper/deleteTestPaperById",
-    useFake: true
+    useFake: false
   },
   autoGenerateTestPaper: {
     url: "/testPaper/autoGenerateTestPaper",
-    useFake: true
+    useFake: false
   },
   manualGenerateTestPaper: {
     url: "/testPaper/manualGenerateTestPaper",
-    useFake: true
+    useFake: false
   },
   getAllTestPapers: {
     url: "/testPaper/getAllTestPapers",
-    useFake: true
+    useFake: false
   },
 }
 
 export const TestPaperService = {
-  getUserTestPapers: async (test_paper_id) => {
-    let response = await getTestPapersByAccountId(test_paper_id);
+  getUserTestPapers: async (account_id) => {
+    let response = (await getTestPapersByAccountId(account_id)).data;
     if (!response || !response.isSuccess || !response.data) {
       return;
     }
@@ -45,27 +45,27 @@ export const TestPaperService = {
   },
 
   modifyUserTestPaper: async (testPaper) => {
-    let response = await modifyTestPaperInformation(testPaper);
+    let response = (await modifyTestPaperInformation(testPaper)).data;
     return response;
   },
   
   exportTestPaper: async (test_paper_id) => {
-    let response = await exportTestPaperById(test_paper_id);
+    let response = (await exportTestPaperById(test_paper_id)).data;
     return response;
   },
 
   deleteTestPaper: async (test_paper_id) => {
-    let response = await deleteTestPaperById(test_paper_id);
+    let response = (await deleteTestPaperById(test_paper_id)).data;
     return response;
   },
 
   autoGenerateUserTestPaper: async (testPaper) => {
-    let response = await autoGenerateTestPaper(testPaper);
+    let response = (await autoGenerateTestPaper(testPaper)).data;
     return response;
   },
 
   manualGenerateUserTestPaper: async (testPaper) => {
-    let response = await manualGenerateTestPaper(testPaper);
+    let response = (await manualGenerateTestPaper(testPaper)).data;
     return response;
   },
 
@@ -78,7 +78,7 @@ export const TestPaperService = {
   },
 
   getAllOfTestPaper: async () => {
-    let response = await getAllTestPapers();
+    let response = (await getAllTestPapers()).data;
     if (!response || !response.isSuccess || !response.data) {
       return;
     }
@@ -86,7 +86,7 @@ export const TestPaperService = {
   },
 
   modifyTestPaper: async (testPaper) => {
-    let response = await modifyTestPaperInformation(testPaper);
+    let response = (await modifyTestPaperInformation(testPaper)).data;
     return response;
   }
 }
@@ -94,12 +94,12 @@ export const TestPaperService = {
 /**
  * 获取用户的试卷
  */
-const getTestPapersByAccountId = (test_paper_id) => {
+const getTestPapersByAccountId = (account_id) => {
   if (API.getTestPapersByAccountId.useFake) {
-    return FakeTestPaperService.getTestPapersByAccountId(test_paper_id);
+    return FakeTestPaperService.getTestPapersByAccountId(account_id);
   } else {
     return request(API.getTestPapersByAccountId.url, {
-      test_paper_id
+      account_id
     }, 'GET');
   }
 };

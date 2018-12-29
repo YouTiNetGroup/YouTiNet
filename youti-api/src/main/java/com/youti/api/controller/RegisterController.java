@@ -17,10 +17,10 @@ import com.youti.api.service.AccountService;
 import com.youti.api.utils.RespEntity;
 
 /**
- *注册 
- * */
+ * 注册
+ */
 @RestController
-@RequestMapping("/register")
+@RequestMapping("/account")
 @CrossOrigin
 public class RegisterController {
 	@Resource
@@ -28,32 +28,23 @@ public class RegisterController {
 
 	/**
 	 * 注册
-	 * */
-	private AccountBean account=new AccountBean();
-	
-	@PostMapping("/regist")
+	 */
+	@PostMapping("/register")
 	@ResponseBody
-    public RespEntity Register(HttpServletRequest request){
+	public RespEntity register(@RequestBody AccountBean accountBean) {
 		RespEntity respEntity = new RespEntity();
-		String account_id=request.getParameter("account_id");
-	    String password=request.getParameter("password");
-        String privilege=request.getParameter("privilege");
-        account=accountService.findById(account_id);
-    
-        if (account==null) {
-        	AccountBean account = new AccountBean();
-        	account.setAccount_id(account_id);
-        	account.setPassword(password);
-        	account.setPrivilege(privilege);
-        	accountService.save(account);
-        	respEntity.setIsSuccess(true);
-        	respEntity.setMessage("注册成功");
-        } else {
-        	respEntity.setIsSuccess(false);
-        	respEntity.setMessage("ID已经存在");
-        }
-        return respEntity;
-    }
 
-	
+		if (accountService.findById(accountBean.getAccount_id()) == null) {
+			accountBean.setPrivilege("user");
+			accountService.save(accountBean);
+			respEntity.setIsSuccess(true);
+			respEntity.setMessage("注册成功");
+		} else {
+			respEntity.setIsSuccess(false);
+			respEntity.setMessage("ID已经存在");
+		}
+
+		return respEntity;
+	}
+
 }

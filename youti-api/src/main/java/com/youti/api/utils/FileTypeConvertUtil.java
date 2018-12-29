@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 /**
- * html转pdf demo
+ * html转pdf
  */
 public class FileTypeConvertUtil {
 
@@ -54,11 +54,9 @@ public class FileTypeConvertUtil {
 
 
     public static void main(String[] args) {
-        //        String htmlFile = "/home/lbj/sign.jsp";
-        //        String pdfFile = "/home/lbj/sign.pdf";
-        String htmlFile = "d:/testPaper.html";
-        String pdfFile = "d:/testPaper.pdf";
-        try {
+    	String htmlFile = "files/test.html";
+    	String pdfFile = "files/test.pdf";
+    	try {
             FileTypeConvertUtil.html2pdf(htmlFile, pdfFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -102,7 +102,7 @@ export default {
       ],
       knowledgePointOptions: [],
       questionTypeOptions: [
-        { value: "单选题", index: 1 }, { value: "不定项选择题", index: 2 }, { value: "填空题", index: 3 }, { value: "问答题", index: 4 }
+        { value: "单选题", index: 1 }, { value: "多选题", index: 2 }, { value: "填空题", index: 3 }, { value: "解答题", index: 4 }
       ],
       difficultyDegreeOptions: [
         { value: "一星", index: "1" }, { value: "二星", index: "2" }, { value: "三星", index: "3" }, { value: "四星", index: "4" }, { value: "五星", index: "5" }
@@ -120,7 +120,6 @@ export default {
 
   methods: {
     async initData() {
-      this.keyword = this.$route.params.keyword;
       this.questionList = await QuestionService.getAllOfQuestions();
       this.filterQuestionList = JSON.parse(JSON.stringify(this.questionList));
     },
@@ -181,6 +180,7 @@ export default {
       this.knowledge_point = null;
       this.question_type = null;
       this.difficulty_degree = null;
+      this.clickFilter();
     }
   }
 };
@@ -255,9 +255,8 @@ export default {
         .filter {
           width: 0.5rem;
           height: 0.3rem;
-          border: 1px solid #84bb5f;
-          background-color: #f8f7f3;
-          color: #54b148;
+          background-color: #55a7b6;
+          color: #fff;
           border-radius: 0.06rem;;
           display: flex;
           justify-content: center;
@@ -267,9 +266,8 @@ export default {
         .reset {
           width: 0.5rem;
           height: 0.3rem;
-          border: 1px solid #e4a581;
-          background-color: #f8f7f3;
-          color: #e46c3d;
+          background-color: #54b669;
+          color: #fff;
           border-radius: 0.06rem;;
           display: flex;
           justify-content: center;
@@ -278,15 +276,6 @@ export default {
         }
         .text {
           font-size: 0.15rem;
-        }
-        .input_box {
-          margin-left: 0.1rem;
-          width: 1.5rem;
-          height: 0.3rem;
-          padding: 0 0.05rem;
-          border: 1px solid #bbbbbb;
-          outline: none;
-          -webkit-appearance: none;
         }
       }
     }

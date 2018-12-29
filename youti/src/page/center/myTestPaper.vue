@@ -9,7 +9,7 @@
             <div class="total_score">满分：{{ item.total_score }} 分</div>
           </div>
           <div class="body">
-            <div class="subject_name">科目：{{ item.subject_name }}</div>
+            <div class="subject_name">科目：{{ getSubject(item.subject_id) }}</div>
             <div class="difficulty_degree">难度：{{ item.difficulty_degree }}</div>
             <div class="school_year">学年：{{ item.school_year }}</div>
             <div class="semester">学期：第{{ item.semester }}学期</div>
@@ -43,9 +43,10 @@
 </template>
 
 <script>
-import store from "src/store"
-import { globalBus } from "src/service/globalBus";
+import store from "src/store";
 import domUtil from "src/assets/js/domUtils.js";
+import common from "src/assets/js/common.js";
+import { globalBus } from "src/service/globalBus";
 import { AccountService } from "src/service/account.js";
 import { TestPaperService } from "src/service/testPaper.js";
 import { QuestionService } from "src/service/question.js";
@@ -107,7 +108,7 @@ export default {
 
     async exportTestPaper(index) {
       let item = this.testPaperList[(this.currentPage-1) * this.pageSize + index];
-      let response = await TestPaperService.exportUserTestPaper(this.userInfo.account_id, item.test_paper_id);
+      let response = await TestPaperService.exportTestPaper(item.test_paper_id);
       if(response && response.isSuccess) {
         this.$toast.text("导出成功")
       } else {
@@ -117,14 +118,18 @@ export default {
 
     async deleteTestPaper(index) {
       let item = this.testPaperList[(this.currentPage-1) * this.pageSize + index];
-      let response = await TestPaperService.deleteUserTestPaper(this.userInfo.account_id, item.test_paper_id);
+      let response = await TestPaperService.deleteTestPaper(item.test_paper_id);
       if(response && response.isSuccess) {
         this.$toast.text("删除成功")
       } else {
         this.$toast.text(response.message);
       }
       this.initData();
-    }
+    },
+
+    getSubject(subject_id) {
+      return common.getSubject(subject_id);
+    },
   }
 };
 </script>

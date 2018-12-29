@@ -9,8 +9,8 @@ const API = {
     url: "/account/login",
     useFake: true
   },
-  createUser: {
-    url: "/account/createUser",
+  register: {
+    url: "/account/register",
     useFake: true
   },
   getUserInformation: {
@@ -20,7 +20,15 @@ const API = {
   updateUserInformation: {
     url: "/account/updateUserInformation",
     useFake: true
-  }
+  },
+  getAllUsers: {
+    url: "/account/getAllUsers",
+    useFake: true
+  },
+  deleteUserByAccountId: {
+    url: "/account/deleteUserByAccountId",
+    useFake: true
+  },
 }
 
 export const AccountService = {
@@ -42,7 +50,7 @@ export const AccountService = {
   },
 
   userRegister: async (params) => {
-    let response = await createUser(params.account_id, params.password, params.privilege);
+    let response = await register(params.account_id, params.password, params.privilege);
     if (!response || !response.isSuccess) {
       return response;
     }
@@ -72,6 +80,24 @@ export const AccountService = {
     return response;
   },
 
+  getAllOfUsers: async () => {
+    let response = await getAllUsers();
+    if (!response || !response.isSuccess || !response.data) {
+      return;
+    }
+    return response.data;
+  },
+
+  modifyUser: async (userInfo) => {
+    let response = await updateUserInformation(userInfo);
+    return response;
+  },
+
+  deleteUser: async (account_id) => {
+    let response = await deleteUserByAccountId(account_id);
+    return response;
+  },
+
 }
 
 /**
@@ -92,11 +118,11 @@ const login = (account_id, password, privilege) => {
 /**
  * 注册用户
  */
-const createUser = (account_id, password, privilege) => {
-  if (API.createUser.useFake) {
-    return FakeAccountService.createUser(account_id, password, privilege);
+const register = (account_id, password, privilege) => {
+  if (API.register.useFake) {
+    return FakeAccountService.register(account_id, password, privilege);
   } else {
-    return request(API.createUser.url, {
+    return request(API.register.url, {
       account_id,
       password,
       privilege
@@ -124,6 +150,26 @@ const updateUserInformation = (userInfo) => {
   if (API.updateUserInformation.useFake) {
     return FakeAccountService.updateUserInformation(userInfo);
   } else {
-    return request(API.updateUserInformation.url, userInfo, 'POST');
+    return request(API.updateUserInformation.url, {
+      userInfo
+    }, 'POST');
+  }
+};
+
+const getAllUsers = () => {
+  if (API.getAllUsers.useFake) {
+    return FakeAccountService.getAllUsers();
+  } else {
+    return request(API.getAllUsers.url, {}, 'GET');
+  }
+};
+
+const deleteUserByAccountId = (account_id) => {
+  if (API.deleteUserByAccountId.useFake) {
+    return FakeAccountService.deleteUserByAccountId(account_id);
+  } else {
+    return request(API.deleteUserByAccountId.url, {
+      account_id
+    }, 'POST');
   }
 };

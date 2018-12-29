@@ -151,11 +151,10 @@ export default {
       this.modifyTestPaper = TestPaperService.getTestPaper();
       if(this.modifyTestPaper && this.modifyTestPaper.test_paper_id) {
         this.isModifyTestPaper = true;
-        this.form.subject = this.modifyTestPaper.subject_name;
+        this.form.subject = this.modifyTestPaper.subject_id;
         this.form.title = this.modifyTestPaper.title;
         this.form.school_year = this.modifyTestPaper.school_year;
         this.form.semester = this.modifyTestPaper.semester;
-        console.log("modifyTestPaper")
       }
       this.allQuestions = QuestionService.getAllPaperQuestions();
       this.paperQuestions = QuestionService.groupQuestionByQuestionType(
@@ -444,7 +443,7 @@ export default {
                   flex: 0 0 auto;
                 }
                 .question {
-                  /deep/ .subject-des li {
+                  /deep/ li {
                     list-style-type: upper-alpha;
                     list-style-position: inside;
                     margin: 10px 0;

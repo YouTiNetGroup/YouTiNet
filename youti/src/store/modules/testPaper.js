@@ -3,7 +3,7 @@ const state = {
     test_paper_id: null,
     creator_id: "",
     title: "",
-    subject_name: "",
+    subject_id: null,
     total_score: null,
     difficulty_degree: null,
     school_year: "",
@@ -35,7 +35,7 @@ const mutations = {
     state.testPaper.test_paper_id = testPaper.test_paper_id
     state.testPaper.creator_id = testPaper.creator_id
     state.testPaper.title = testPaper.title
-    state.testPaper.subject_name = testPaper.subject_name
+    state.testPaper.subject_id = testPaper.subject_id
     state.testPaper.total_score = testPaper.total_score
     state.testPaper.difficulty_degree = testPaper.difficulty_degree
     state.testPaper.school_year = testPaper.school_year
@@ -45,7 +45,7 @@ const mutations = {
     state.testPaper.test_paper_id = null
     state.testPaper.creator_id = ""
     state.testPaper.title = ""
-    state.testPaper.subject_name = ""
+    state.testPaper.subject_id = null
     state.testPaper.total_score = null
     state.testPaper.difficulty_degree = null
     state.testPaper.school_year = ""

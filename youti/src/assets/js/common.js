@@ -51,9 +51,9 @@ export default {
   getQuestionType: function (type_id) {
     switch(type_id) {
       case 1: return "单选题";
-      case 2: return "不定项选择题";
+      case 2: return "多选题";
       case 3: return "填空题";
-      case 4: return "问答题";
+      case 4: return "解答题";
       default: return "";
     }
   },

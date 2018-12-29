@@ -37,6 +37,46 @@ public class UserController {
 	}
 	
 	/**
+	 * 获取用户信息
+	 * */
+	@RequestMapping("/getinfo")
+	@ResponseBody
+	public RespEntity getUserInfo(@RequestBody AccountBean accountBean,HttpSession session) {
+		RespEntity respEntity = new RespEntity(true,accountBean,"修改密码成功");
+		return respEntity;
+	}
+	
+	/**
+	 * 修改姓名
+	 * */
+	@RequestMapping("/modifyname")
+	@ResponseBody
+	public RespEntity modifyName(@RequestBody AccountBean accountBean,HttpSession session) {
+		accountService.updateNameById(accountBean.getAccount_id(), accountBean.getName());
+		RespEntity respEntity = new RespEntity(true,null,"修改姓名成功");
+		return respEntity;
+	}
+	/**
+	 * 修改email
+	 * */
+	@RequestMapping("/modifyemail")
+	@ResponseBody
+	public RespEntity modifyEmail(@RequestBody AccountBean accountBean,HttpSession session) {
+		accountService.updateEmailById(accountBean.getAccount_id(), accountBean.getEmail());
+		RespEntity respEntity = new RespEntity(true,null,"修改email成功");
+		return respEntity;
+	}
+	/**
+	 * 修改phone
+	 * */
+	@RequestMapping("/modifyphone")
+	@ResponseBody
+	public RespEntity modifyPhone(@RequestBody AccountBean accountBean,HttpSession session) {
+		accountService.updatePhoneById(accountBean.getAccount_id(), accountBean.getPhone());
+		RespEntity respEntity = new RespEntity(true,null,"修改phone成功");
+		return respEntity;
+	}
+	/**
 	 * 登出
 	 * */
 	@RequestMapping("/logout")
@@ -46,5 +86,6 @@ public class UserController {
         RespEntity respEntity = new RespEntity(true,null,"登出成功");
 		return respEntity;
     }
+	
 	
 }

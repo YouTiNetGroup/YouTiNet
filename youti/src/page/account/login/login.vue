@@ -79,7 +79,6 @@ export default {
       let response = await AccountService.userlogin({
         account_id: this.userAccount,
         password: this.password,
-        privilege: "user"
       });
       if(response && response.isSuccess) {
         this.$router.push("/page/home");

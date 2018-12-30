@@ -162,7 +162,7 @@ public class AccountService {
 		
 		if(sessionAccount.isPresent()){
 			verify = accountBean.getPassword().equals(sessionAccount.get().getPassword()) && 
-					accountBean.getPrivilege().equals(sessionAccount.get().getPrivilege());
+					(accountBean.getPrivilege() != null ? accountBean.getPrivilege().equals(sessionAccount.get().getPrivilege()) : true);
 		}
 		return verify;
 	}

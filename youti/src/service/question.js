@@ -59,6 +59,12 @@ export const QuestionService = {
         }
       }
     }
+    for (let i = 0; i < questionTab.length; i++) {
+      if(questionTab[i].total == 0) {
+        questionTab.splice(i, 1);
+        i--;
+      }
+    }
     return questionTab;
   },
 

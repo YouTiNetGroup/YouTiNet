@@ -4,11 +4,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -20,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpHeaders;
@@ -53,6 +59,7 @@ import com.youti.api.utils.CaculateUtil;
 import com.youti.api.utils.FileTypeConvertUtil;
 import com.youti.api.utils.FileUtil;
 import com.youti.api.utils.FreemarkerUtil;
+import com.youti.api.utils.QuestionNumber;
 import com.youti.api.utils.RespEntity;
 import com.youti.api.utils.ZipUtil;
 import com.youti.api.utils.CreateRandomListUtil;
@@ -288,9 +295,9 @@ public class TestPaperController {
 			int j = 0;
 			for (i = 0; i < count2.length; i++) {
 				String temp = "question_type_" + (i + 1);
-				htmlContent.put(temp, (i + 1) + "、"
+				htmlContent.put(temp, QuestionNumber.NUMBER[i]/*(i + 1)*/ + "、"
 						+ questionTypeService.findById(questionList.get(index).getType_id()).getQuestion_type());
-				htmlAnswer.put(temp, (i + 1) + "、"
+				htmlAnswer.put(temp, QuestionNumber.NUMBER[i]/*(i + 1)*/ + "、"
 						+ questionTypeService.findById(questionList.get(index).getType_id()).getQuestion_type());
 
 				for (j = 0; j < count2[i]; j++) {
@@ -380,9 +387,40 @@ public class TestPaperController {
 		       
 		        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(download_file),    
 		                                              headers, HttpStatus.CREATED);  */ 
-		        
 				
-				BufferedInputStream bis = null;
+				
+				
+		  
+		        //1.设置文件ContentType类型，这样设置，会自动判断下载文件类型   
+		        /*response.setContentType("multipart/form-data");   
+		        //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)   
+		        response.setHeader("Content-Disposition", "attachment;fileName="+"a.zip");   
+		        ServletOutputStream out;   
+		  
+		        try {   
+		            FileInputStream inputStream = new FileInputStream(download_file);   
+		  
+		            //3.通过response获取ServletOutputStream对象(out)   
+		            out = response.getOutputStream();   
+		  
+		            int b = 0;   
+		            byte[] buffer = new byte[1024];   
+		            while (b != -1){   
+		                b = inputStream.read(buffer);   
+		                //4.写到输出流(out)中   
+		                out.write(buffer,0,b);   
+		            }   
+		            inputStream.close();   
+		            out.close();   
+		            out.flush();   
+		  
+		        } catch (IOException e) {   
+		            e.printStackTrace();   
+		        }*/   
+
+				
+				
+				/*BufferedInputStream bis = null;
 				BufferedOutputStream bos = null;
 			
 				try {
@@ -413,13 +451,14 @@ public class TestPaperController {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-				}	
+				}	*/
 			    
 
 		          
 				
-			/*	// 配置文件下载
-				response.setContentType("application/octet-stream");
+				
+				// 配置文件下载
+		/*		response.setContentType("application/octet-stream");
 				// 下载文件能正常显示中文
 				response.setHeader("Content-Disposition",
 						"attachment;filename=" + URLEncoder.encode(testpaper_name, "UTF-8"));
@@ -455,28 +494,27 @@ public class TestPaperController {
 							e.printStackTrace();
 						}
 					}
-				}*/
+				}
+					*/
+				respEntity.setIsSuccess(true);
+				respEntity.setMessage("试卷导出成功");
 					
-					
-			}
-			
-			/*else {
+			}else {
 				respEntity.setIsSuccess(false);
 				respEntity.setMessage("试卷导出失败");
 			}
-
-			respEntity.setIsSuccess(true);
-			respEntity.setMessage("试卷导出成功");*/
 
 			// 删除文件
 			FileUtil.deleteFile(htmlFile);
 			FileUtil.deleteFile(htmlFile2);
 			FileUtil.deleteFile(pdfFile);
 			FileUtil.deleteFile(pdfFile2);
-			FileUtil.deleteFile(zipfile);
+//			FileUtil.deleteFile(zipfile);
 
 		}
-		return null;
+//		return null;
+		
+		return respEntity;
 	}
 
 	/**

@@ -1,9 +1,16 @@
 package com.youti.api.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,7 +61,7 @@ public class DemoController {
 	//在方法上加上@ResponseBody注解，返回json格式的数据
 	@RequestMapping("/getAll")
 	@ResponseBody
-	public Iterable<DemoBean> getAll(){
+	public List<DemoBean> getAll(){
 		return demoService.getAll();
 	}
 	
@@ -66,6 +73,11 @@ public class DemoController {
 		demoService.deleteById(id);
 		return "delete ok";
 	}
+	@RequestMapping(value = "/update1/{id}")
+	public String update(@PathVariable int id) {
+		demoService.update(id);
+		return "update ok";
+	}
 	
 	/**
 	 * 4.json
@@ -76,4 +88,15 @@ public class DemoController {
 		demoService.update(Integer.parseInt(data.get("id")));
 		return "update ok";
 	}
+	/*
+	@RequestMapping("/download")
+	@ResponseBody
+	public ResponseEntity<byte[]> download() throws IOException {
+		File file = new File("D:" + File.separator + "test.txt");// 你放的文件路径 // new String("线上消费记录".getBytes("GBK"),"iso-8859-1")
+		HttpHeaders headers = new HttpHeaders();// 设置一个head
+		headers.setContentDispositionFormData("attachment", "test.txt");// 文件的属性，也就是文件叫什么吧
+		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);// 内容是字节流
+		return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);// 开始下载
+	}*/
+
 }

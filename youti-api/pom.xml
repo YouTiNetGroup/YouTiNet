@@ -33,7 +33,21 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		
+		<!-- 热启动 -->
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+        
+        <!-- 权限
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+		-->
+		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -54,10 +68,57 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.39</version>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		
+		<dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		    <version>1.2.23</version>
+		</dependency>
+		
+		<!-- pdf -->
+		<dependency>  
+			<groupId>com.itextpdf</groupId>  
+            <artifactId>itextpdf</artifactId>  
+            <version>5.5.0</version>
+        </dependency>  
+        <dependency>  
+        	<groupId>com.itextpdf.tool</groupId>  
+            <artifactId>xmlworker</artifactId>  
+            <version>5.5.0</version>
+        </dependency>  
+        <dependency>  
+        	<groupId>com.itextpdf</groupId>  
+            <artifactId>itext-asian</artifactId>  
+            <version>5.2.0</version>
+        </dependency>  
+		<dependency>
+		    <groupId>org.xhtmlrenderer</groupId>
+		    <artifactId>flying-saucer-pdf-itext5</artifactId>
+		    <version>9.0.3</version>
+		</dependency>
+		
+		<!-- freemarker -->
+		<dependency>
+			<groupId>org.freemarker</groupId>
+      		<artifactId>freemarker</artifactId>
+		</dependency>
+
+		
 	</dependencies>
 
 	<build>
@@ -65,7 +126,35 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<!-- 配置热启动 -->
+                    <configuration>
+                    <fork>true</fork>
+                    </configuration>
+				<executions>
+                	<execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
 			</plugin>
+			<plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- 我运行这个jar所运行的主类 -->
+                            <mainClass>com.youti.api.YoutiApiApplication</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>
+                            <!-- 必须是这样写 -->
+                            jar-with-dependencies
+                        </descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -20,9 +21,17 @@ public class UploadController {
     @Value("${prop.upload-folder}")
     private String UPLOAD_FOLDER;
     private Logger logger = LoggerFactory.getLogger(UploadController.class);
+    
+//    @RequestMapping(value = "/singleFile", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String singleFileUpload(@RequestBody Map<String, String> data) throws Exception {
+//    	System.out.println(JSON.toJSONString(file, true));
+//		return "update ok";
+//    }
 
-    @PostMapping("/singlefile")
+    @PostMapping("/singleFile")
     public Object singleFileUpload(MultipartFile file) {
+    	System.out.println(JSON.toJSONString(file, true));
         logger.debug("传入的文件参数：{}", JSON.toJSONString(file, true));
         if (Objects.isNull(file) || file.isEmpty()) {
             logger.error("文件为空");

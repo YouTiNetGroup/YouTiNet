@@ -31,13 +31,6 @@ public class MvcConfig extends WebMvcConfigurationSupport{
     return converter;
     }
 
-//    @Override
-//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//    super.configureMessageConverters(converters);
-//
-//    converters.add(responseBodyConverter());
-//    }
-    
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         //创建fastJson消息转换器

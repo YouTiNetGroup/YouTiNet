@@ -110,7 +110,7 @@ export default {
       let item = this.testPaperList[(this.currentPage-1) * this.pageSize + index];
       let response = await TestPaperService.exportTestPaper(item.test_paper_id);
       if(response && response.isSuccess) {
-        this.$toast.text("导出成功")
+        this.$toast.text("导出成功，可在本地F盘查看");
       } else {
         this.$toast.text(response.message);
       }

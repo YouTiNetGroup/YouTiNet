@@ -299,6 +299,45 @@ public class QuestionService {
 		return list;
 	}
 	
+	/**
+	 * 根据学科id、题型id和难度查找试题
+	 * @param subject_id,type_id,difficulty_degree
+	 * */
+	@Transactional
+	public List<QuestionBean> findBySTD(int subject_id,int type_id,String difficulty_degree) {
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getSubject_id() == subject_id && 
+					temp.getType_id() == type_id && temp.getDifficulty_degree().equals(difficulty_degree)) {
+				list.add(temp);
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * 根据学科id和题型id查找试题
+	 * @param subject_id,type_id
+	 * */
+	public List<QuestionBean> findByST(int subject_id,int type_id) {
+		List<QuestionBean> list = new ArrayList<QuestionBean>();
+		Iterator<QuestionBean> iterator = questionRepository.findAll().iterator();
+		QuestionBean temp = null;
+
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getSubject_id() == subject_id && 
+					temp.getType_id() == type_id ) {
+				list.add(temp);
+			}
+		}
+		return list;
+	}
+	
 	
 	/**
 	 * 根据试题分值查找试题

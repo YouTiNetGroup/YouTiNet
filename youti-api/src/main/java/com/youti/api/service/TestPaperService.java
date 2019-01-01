@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.annotation.Resource;
 
@@ -228,6 +230,40 @@ public class TestPaperService {
 		}
 		return list;
 	}
+	
+	/**
+	 * 根据学科id和创建者id查找试卷查找试卷,按试卷id升序
+	 * @param subject_id creator_id
+	 * */
+	@Transactional
+	public List<TestPaperBean> findBySubjectIdAndCreatId(int subject_id,String creator_id) {
+		List<TestPaperBean> list = new ArrayList<TestPaperBean>();
+		Iterator<TestPaperBean> iterator = testPaperRepository.findAll().iterator();
+		TestPaperBean temp = null;
+
+		while(iterator.hasNext()) {
+			temp = iterator.next();
+			if(temp.getSubject_id() == subject_id && temp.getCreator_id().equals(creator_id)) {
+				list.add(temp);
+			}
+		}
+		Collections.sort(list, new Comparator<TestPaperBean>() {  
+
+            @Override  
+            public int compare(TestPaperBean o1, TestPaperBean o2) {  
+                // 按照试卷的id进行升序排列  
+                if (o1.getTest_paper_id() < o2.getTest_paper_id()){  
+                    return 1;  
+                }  
+                if (o1.getTest_paper_id() == o2.getTest_paper_id()) {  
+                    return 0;  
+                }  
+                return -1;  
+            }  
+        });  
+		return list;
+	}
+	
 	
 	/**
 	 * 根据总分值查找试卷

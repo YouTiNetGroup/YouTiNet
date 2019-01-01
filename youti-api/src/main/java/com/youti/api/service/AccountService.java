@@ -161,7 +161,8 @@ public class AccountService {
 		Optional<AccountBean> sessionAccount = accountRepository.findById(accountBean.getAccount_id());
 		
 		if(sessionAccount.isPresent()){
-			verify = accountBean.getPassword().equals(sessionAccount.get().getPassword());
+			verify = accountBean.getPassword().equals(sessionAccount.get().getPassword()) && 
+					(accountBean.getPrivilege() != null ? accountBean.getPrivilege().equals(sessionAccount.get().getPrivilege()) : true);
 		}
 		return verify;
 	}

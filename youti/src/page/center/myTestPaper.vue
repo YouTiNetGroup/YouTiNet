@@ -110,21 +110,25 @@ export default {
       let item = this.testPaperList[(this.currentPage-1) * this.pageSize + index];
       let response = await TestPaperService.exportTestPaper(item.test_paper_id);
       if(response && response.isSuccess) {
-        this.$toast.text("导出成功")
+        this.$toast.text("导出成功，可在本地F盘查看");
       } else {
         this.$toast.text(response.message);
       }
     },
 
     async deleteTestPaper(index) {
-      let item = this.testPaperList[(this.currentPage-1) * this.pageSize + index];
-      let response = await TestPaperService.deleteTestPaper(item.test_paper_id);
-      if(response && response.isSuccess) {
-        this.$toast.text("删除成功")
-      } else {
-        this.$toast.text(response.message);
-      }
-      this.initData();
+      this.$confirm('确定删除该试卷？').then(async () => {
+        let item = this.testPaperList[(this.currentPage-1) * this.pageSize + index];
+        let response = await TestPaperService.deleteTestPaper(item.test_paper_id);
+        if(response && response.isSuccess) {
+          this.$toast.text("删除成功")
+        } else {
+          this.$toast.text(response.message);
+        }
+        this.initData();
+      }).catch(() => {
+        return;
+      });
     },
 
     getSubject(subject_id) {

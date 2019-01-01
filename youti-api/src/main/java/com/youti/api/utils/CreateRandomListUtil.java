@@ -29,4 +29,22 @@ public class CreateRandomListUtil {
 			return listNew;
 		}
 	}
+	
+	
+	/**
+	 * 从list<T>中随机抽取元素并按原顺序
+	 * 
+	 * @param <T>
+	 * @param list
+	 * @param n
+	 */
+	public static <T> List<T> createRandomList2(List<T> list, int n) {
+		List<T> temp = new ArrayList<T>(list);
+		while(temp.size()>n) {
+			int random = (int) (Math.random() * temp.size());
+			temp.remove(random);
+		}
+		return temp;
+	}
+	
 }

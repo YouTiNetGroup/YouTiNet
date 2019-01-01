@@ -1,6 +1,7 @@
 package com.youti.api.controller;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -381,8 +382,6 @@ public class TestPaperController {
 		                                              headers, HttpStatus.CREATED);  */ 
 		        
 				
-				response.setContentType("text/html;charset=utf-8");
-
 				BufferedInputStream bis = null;
 				BufferedOutputStream bos = null;
 			
@@ -573,32 +572,114 @@ public class TestPaperController {
 		testPaperService.save(testpaper);
 		int test_paper_id = testpaper.getTest_paper_id();
 
-		List<TestPaperBean> list = testPaperService.findBySubjectIdAndCreatId(subject_id, creator_id);
-		List<QuestionBean> question = questionService.findBySubjectId(subject_id);
-		List<QuestionBean> question2 = new ArrayList<QuestionBean>();
-
-		//???
-		int j = 0;
-		for (TestPaperBean testpapertemp : list) {
-			j = j + 1;
-			if (j == 2) {
-				break;
-			}
+		
+		//重复统计
+		List<TestPaperBean> testPaperList = testPaperService.findBySubjectIdAndCreatId(subject_id, creator_id);
+		List<QuestionBean> questionList = questionService.findBySubjectId(subject_id);
+		List<QuestionBean> questionList2 = new ArrayList<QuestionBean>();
+		Map<Integer,Integer> question2 = new HashMap<Integer,Integer>();
+		
+		for(QuestionBean questiontemp:questionList) {
+			question2.put(questiontemp.getQuestion_id(), 0);
+		}
+		
+		//System.out.println(question2.size());
+		
+		for(TestPaperBean testpapertemp: testPaperList) {
 			List<TestPaperContainBean> testpapercontainList = testPaperContainService
 					.findByTestPaperId(testpapertemp.getTest_paper_id());
-			for (TestPaperContainBean testpapercontaintemp : testpapercontainList) {
-				question2.add(questionService.findById(testpapercontaintemp.getQuestion_id()));
+			for(TestPaperContainBean testpapercontaintemp : testpapercontainList) {
+				int times = question2.get(testpapercontaintemp.getQuestion_id());
+				question2.put(testpapercontaintemp.getQuestion_id(), times+1);
 			}
 		}
-		if(question2.size()==0) {System.out.println("question2.size = 0");}
-		question.removeAll(question2);
 		
+	    Comparator<Map.Entry<Integer, Integer>> valueComparator = new Comparator<Map.Entry<Integer,Integer>>() {
+			@Override
+			public int compare(Entry<Integer, Integer> o1, Entry<Integer, Integer> o2) {
+				return o1.getValue()-o2.getValue();
+			}
+	    };
 
-		/* 生成题目 */
+	    List<Map.Entry<Integer, Integer>> list = new ArrayList<Map.Entry<Integer,Integer>>(question2.entrySet());
+	    Collections.sort(list,valueComparator);
+	    for (Map.Entry<Integer, Integer> entry : list) {
+	    	questionList2.add(questionService.findById(entry.getKey()));
+	    }
+	    
+	    
+	    //生成题目
+	    Iterator<QuestionsInfoEntity> it = questionsinfo.iterator();
+  		int question_number = 0;
+  		int difficulty = Integer.parseInt(difficulty_degree);
+  		
+  		while (it.hasNext()) {
+  			question_number = question_number + 1;
+  			QuestionsInfoEntity x = it.next();
+  			int type_id = x.getType();
+  			int count = x.getCount();
+  			int score = x.getScore();
+
+  			int sum = count * difficulty;
+  			List<Integer> typeList = new ArrayList<Integer>();
+  			typeList.add(type_id);
+
+  			List<QuestionBean> result = null;
+  			result = questionList.stream().filter((QuestionBean q) -> typeList.contains(q.getType_id()))
+  					.collect(Collectors.toList());
+  			
+  			
+  			List<QuestionBean> question1 = null;
+  			int limitcount = 0;
+  			while (limitcount<=result.size()) {
+  				question1 = CreateRandomListUtil.createRandomList2(result, count);
+  				int sum1 = 0;
+  				for (QuestionBean questions : question1) {
+  					sum1 += Integer.parseInt(questions.getDifficulty_degree());
+  				}
+  				limitcount++;
+  				if (sum1 + 1 >= sum) {
+  					break;
+  				}
+  			}
+  			
+
+  			int question_number_2 = 0;
+  			for (QuestionBean questions : question1) {
+  				question_number_2 = question_number_2 + 1;
+  				TestPaperContainBean testpapercontain = new TestPaperContainBean();
+  				testpapercontain.setQuestion_id(questions.getQuestion_id());
+  				testpapercontain.setTest_paper_id(test_paper_id);
+  				testpapercontain.setSet_score(score);
+  				testpapercontain.setQuestion_number(question_number);
+  				testpapercontain.setQuestion_number_2(question_number_2);
+  				testPaperContainService.save(testpapercontain);
+  			}
+  		}		
+	    
+		
+		//重复区分
+	/*	List<TestPaperBean> testPaperList = testPaperService.findBySubjectIdAndCreatId(subject_id, creator_id);
+		List<QuestionBean> questionList = questionService.findBySubjectId(subject_id);
+		List<QuestionBean> questionList2 = new ArrayList<QuestionBean>();
+		
+		for(TestPaperBean testpapertemp: testPaperList) {
+			List<TestPaperContainBean> testpapercontainList = testPaperContainService
+					.findByTestPaperId(testpapertemp.getTest_paper_id());
+			for(TestPaperContainBean testpapercontaintemp : testpapercontainList) {
+				QuestionBean questiontemp = questionService.findById(testpapercontaintemp.getQuestion_id());
+				if(!questionList2.contains(questiontemp)) {
+					questionList2.add(questiontemp);
+				}
+			}
+		}
+		questionList.removeAll(questionList2);
+		
+		//生成题目
 		Iterator<QuestionsInfoEntity> it = questionsinfo.iterator();
 		int question_number = 0;
 		int difficulty = Integer.parseInt(difficulty_degree);
-
+		
 		while (it.hasNext()) {
 			question_number = question_number + 1;
 			QuestionsInfoEntity x = it.next();
@@ -611,22 +692,15 @@ public class TestPaperController {
 			typeList.add(type_id);
 
 			List<QuestionBean> result = null;
-			result = question.stream().filter((QuestionBean q) -> typeList.contains(q.getType_id()))
+			List<QuestionBean> backups = null;
+			result = questionList.stream().filter((QuestionBean q) -> typeList.contains(q.getType_id()))
 					.collect(Collectors.toList());
-
-		/*	boolean m = true;
-			List<QuestionBean> question1 = CreateRandomListUtil.createRandomList(result, count);
-			while (m) {
-				int sum1 = 0;
-				for (QuestionBean questions : question1) {
-					// sum1 = sum + Integer.parseInt(questions.getDifficulty_degree());
-					sum1 += Integer.parseInt(questions.getDifficulty_degree());
-				}
-				// if (sum1 == sum || sum1 - 1 == sum || sum1 + 1 == sum)
-				if (sum1 + 1 >= sum) {
-					m = false;
-				}
-			}*/
+			if(result.size()<count) {
+				backups = questionList2.stream().filter((QuestionBean q) -> typeList.contains(q.getType_id()))
+						.collect(Collectors.toList());
+				result.addAll(CreateRandomListUtil.createRandomList(backups, count-result.size()));
+			}
+			
 			
 			List<QuestionBean> question1 = null;
 			int limitcount = 0;
@@ -654,11 +728,11 @@ public class TestPaperController {
 				testpapercontain.setQuestion_number_2(question_number_2);
 				testPaperContainService.save(testpapercontain);
 			}
-		}
-
+		}*/
+		
 		respEntity.setIsSuccess(true);
 		respEntity.setMessage("试卷生成成功");
-
+		
 		return respEntity;
 	}
 }

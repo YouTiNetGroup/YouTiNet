@@ -2,6 +2,7 @@ package com.youti.api.controller;
 
 import java.util.Map;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,7 +20,13 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -200,12 +207,12 @@ public class TestPaperController {
 
 	/**
 	 * 导出试卷
-	 * 
+	 * *************************
 	 * @throws IOException
 	 */
 	@RequestMapping("/exportTestPaperById")
 	@ResponseBody
-	public RespEntity exportTestPaperById(@RequestBody Map<String, String> params, HttpServletResponse response)
+	public RespEntity exportTestPaperById(@RequestBody Map<String, String> params,HttpServletResponse response )
 			throws IOException {
 		RespEntity respEntity = new RespEntity();
 
@@ -359,14 +366,60 @@ public class TestPaperController {
 			FileOutputStream fos2 = new FileOutputStream(new File(zipfile));
 			ZipUtil.toZip(fileList, fos2);
 
-			// 下载(这个没测试)
+			// 下载
 			File download_file = new File(zipfile);
 
 			// 如果文件名存在，则进行下载
 			if (download_file.exists()) {
+				
+				/*HttpHeaders headers = new HttpHeaders();    
+		        String downloadFileName =new String((testpaper_name+".zip").getBytes("UTF-8"),"iso-8859-1");//解决文件名乱码
+		        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);//application/octet-stream二进制流数据（最常见的文件下载）。
+		        headers.setContentDispositionFormData("attachment", downloadFileName);//通知浏览器以attachment（下载方式）打开
+		       
+		        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(download_file),    
+		                                              headers, HttpStatus.CREATED);  */ 
+		        
+				
+				response.setContentType("text/html;charset=utf-8");
 
-				// 配置文件下载
-				response.setHeader("content-type", "application/octet-stream");
+				BufferedInputStream bis = null;
+				BufferedOutputStream bos = null;
+			
+				try {
+					long fileLength = download_file.length();
+					response.setContentType("application/x-msdownload;");
+					response.setHeader("Content-disposition", "attachment; filename=" 
+					+ new String((testpaper_name+".zip").getBytes("utf-8"), "ISO8859-1"));
+					response.setHeader("Content-Length", String.valueOf(fileLength));
+					bis = new BufferedInputStream(new FileInputStream(download_file));
+					bos = new BufferedOutputStream(response.getOutputStream());
+					byte[] buff = new byte[2048];
+					int bytesRead;
+					while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+						bos.write(buff, 0, bytesRead);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					if (bis != null)
+						try {
+							bis.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					if (bos != null)
+						try {
+							bos.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+				}	
+			    
+
+		          
+				
+			/*	// 配置文件下载
 				response.setContentType("application/octet-stream");
 				// 下载文件能正常显示中文
 				response.setHeader("Content-Disposition",
@@ -385,9 +438,9 @@ public class TestPaperController {
 						os.write(buffer, 0, ii);
 						ii = bis.read(buffer);
 					}
-					System.out.println("Download the song successfully!");
+					System.out.println("Download successfully!");
 				} catch (Exception e) {
-					System.out.println("Download the song failed!");
+					System.out.println("Download failed!");
 				} finally {
 					if (bis != null) {
 						try {
@@ -403,11 +456,18 @@ public class TestPaperController {
 							e.printStackTrace();
 						}
 					}
-				}
+				}*/
+					
+					
+			}
+			
+			/*else {
+				respEntity.setIsSuccess(false);
+				respEntity.setMessage("试卷导出失败");
 			}
 
 			respEntity.setIsSuccess(true);
-			respEntity.setMessage("试卷导出成功");
+			respEntity.setMessage("试卷导出成功");*/
 
 			// 删除文件
 			FileUtil.deleteFile(htmlFile);
@@ -417,7 +477,7 @@ public class TestPaperController {
 			FileUtil.deleteFile(zipfile);
 
 		}
-		return respEntity;
+		return null;
 	}
 
 	/**
@@ -496,7 +556,7 @@ public class TestPaperController {
 			if (questiontemp.size() < questionsinfo.get(i).getCount()) {
 				respEntity.setIsSuccess(false);
 				respEntity.setMessage("题目数不满足");
-				return respEntity;
+				break;
 			}
 		}
 
@@ -517,6 +577,7 @@ public class TestPaperController {
 		List<QuestionBean> question = questionService.findBySubjectId(subject_id);
 		List<QuestionBean> question2 = new ArrayList<QuestionBean>();
 
+		//???
 		int j = 0;
 		for (TestPaperBean testpapertemp : list) {
 			j = j + 1;
@@ -529,7 +590,9 @@ public class TestPaperController {
 				question2.add(questionService.findById(testpapercontaintemp.getQuestion_id()));
 			}
 		}
+		if(question2.size()==0) {System.out.println("question2.size = 0");}
 		question.removeAll(question2);
+		
 
 		/* 生成题目 */
 		Iterator<QuestionsInfoEntity> it = questionsinfo.iterator();
@@ -551,7 +614,7 @@ public class TestPaperController {
 			result = question.stream().filter((QuestionBean q) -> typeList.contains(q.getType_id()))
 					.collect(Collectors.toList());
 
-			boolean m = true;
+		/*	boolean m = true;
 			List<QuestionBean> question1 = CreateRandomListUtil.createRandomList(result, count);
 			while (m) {
 				int sum1 = 0;
@@ -563,7 +626,22 @@ public class TestPaperController {
 				if (sum1 + 1 >= sum) {
 					m = false;
 				}
+			}*/
+			
+			List<QuestionBean> question1 = null;
+			int limitcount = 0;
+			while (limitcount<=result.size()) {
+				question1 = CreateRandomListUtil.createRandomList(result, count);
+				int sum1 = 0;
+				for (QuestionBean questions : question1) {
+					sum1 += Integer.parseInt(questions.getDifficulty_degree());
+				}
+				limitcount++;
+				if (sum1 + 2 >= sum) {
+					break;
+				}
 			}
+			
 
 			int question_number_2 = 0;
 			for (QuestionBean questions : question1) {

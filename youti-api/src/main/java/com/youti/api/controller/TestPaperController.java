@@ -366,7 +366,7 @@ public class TestPaperController {
 			}
 
 			// 压缩文件
-			String zipfile = "F:\\" + testpaper_name + ".zip";
+			String zipfile = "D:\\" + testpaper_name + ".zip";
 
 			List<File> fileList = new ArrayList<>();
 			fileList.add(new File(pdfFile));

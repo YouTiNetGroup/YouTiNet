@@ -134,8 +134,8 @@ public class TestPaperController {
 		String creator_id = (String) testPaper.get("creator_id");
 		int subject_id = (int) testPaper.get("subject_id");
 		String title = (String) testPaper.get("title");
-		// int total_score = (int) testPaper.get("total_score");
-		// String difficulty_degree = (String) testPaper.get("difficulty_degree");
+		int total_score = (int) testPaper.get("total_score");
+		String difficulty_degree = (String) testPaper.get("difficulty_degree");
 		int semester = (int) testPaper.get("semester");
 		String school_year = (String) testPaper.get("school_year");
 
@@ -147,7 +147,6 @@ public class TestPaperController {
 			respEntity.setIsSuccess(false);
 			respEntity.setMessage("试卷不存在");
 		} else {
-			int total_score = 0;
 
 			testPaperBean.setCreator_id(creator_id);
 			testPaperBean.setSubject_id(subject_id);
@@ -155,25 +154,13 @@ public class TestPaperController {
 
 			testPaperBean.setSemester(semester);
 			testPaperBean.setSchool_year(school_year);
+			testPaperBean.setTotal_score(total_score);
+			testPaperBean.setDifficulty_degree(difficulty_degree);
 			
 			if (questions == null || questions.size() == 0) {
 				respEntity.setIsSuccess(true);
 				respEntity.setMessage("试卷修改成功");
 			} else {
-				int[] difficulty_degree = new int[questions.size()];
-				Iterator<TestPaperContainBean> iterator = questions.iterator();
-				while (iterator.hasNext()) {
-					TestPaperContainBean temp = iterator.next();
-					total_score += temp.getSet_score();
-					difficulty_degree[0] = Integer
-							.parseInt(questionService.findById(temp.getQuestion_id()).getDifficulty_degree());
-				}
-				// 分值为题目分值计算的和
-				testPaperBean.setTotal_score(total_score);
-				// 难度为题目难度计算的结果
-				testPaperBean.setDifficulty_degree(
-						CaculateUtil.caculateDifficultyDegree(difficulty_degree, questions, total_score));
-
 				List<TestPaperContainBean> old_questions = testPaperContainService.findByTestPaperId(test_paper_id);
 
 				// 找出questions中没有的oldquestions项，删去那些。

@@ -16,7 +16,7 @@
           <div class="difficulty_degree">难度：{{ getDifficultyDegree(question.difficulty_degree) }}</div>
         </div>
         <div class="body">
-          <div class="question_content" v-html="question.content" @click="gotoQuestionDetail(index)"></div>
+          <div class="question_content" v-html="question.content"></div>
           <div class="score">({{ question.score }}分)</div>
         </div>
         <div class="foot">

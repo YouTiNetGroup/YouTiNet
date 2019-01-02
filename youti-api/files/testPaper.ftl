@@ -107,6 +107,9 @@
     .question_detail .question {
       display: inline-block;
       max-width: 500px;
+      overflow: hidden;
+      word-wrap: break-word;
+      word-break: break-all;
     }
     .score {
       display: inline-block;

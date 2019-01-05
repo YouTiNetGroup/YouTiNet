@@ -71,7 +71,7 @@ export default {
       rules: {
         name: [{ required: true, validator: checkUserName, trigger: "blur" }],
         email: [
-          { type: "email", validator: checkEmail, trigger: ["blur", "change"] }
+          { required: true, type: "email", validator: checkEmail, trigger: ["blur", "change"] }
         ],
         phone: [{ required: true, validator: checkPhone, trigger: "blur" }],
       }

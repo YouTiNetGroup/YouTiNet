@@ -106,6 +106,9 @@
                   </el-option>
                 </el-select>
               </el-form-item>
+              <el-form-item label="总分" prop="total_score">
+                <el-input-number v-model="form.total_score" label="总分" :min="50" :max="150"></el-input-number>
+              </el-form-item>
             </el-form>
           </div>
         </div>
@@ -135,7 +138,9 @@ export default {
       allTypes: [1, 2, 3, 4],
       isIndeterminate: false,
       total_score: 0,
-      form: {},
+      form: {
+        total_score: 100
+      },
       schoolYearOptions: [
         { value: "2018-2019" }, { value: "2017-2018" }, { value: "2016-2017" }, { value: "2015-2016" }, { value: "2014-2015" }
       ],
@@ -164,6 +169,9 @@ export default {
         difficulty_degree: [
           { required: true, message: '请选择难度', trigger: 'change' }
         ],
+        total_score: [
+          { required: true, message: '请设定总分', trigger: 'change' }
+        ]
       }
     };
   },
@@ -205,7 +213,7 @@ export default {
     },
 
     async generateTestPaper(form) {
-      if (this.total_score == 100) {
+      if (this.total_score == this.form.total_score) {
         this.$refs[form].validate(async (valid) => {
           if (valid) {
             let userInfo = await AccountService.getUserInfo();
@@ -213,7 +221,7 @@ export default {
             testPaper.creator_id = userInfo.account_id;
             testPaper.subject_id = this.form.subject;
             testPaper.title = this.form.title;
-            testPaper.total_score = this.total_score;
+            testPaper.total_score = this.form.total_score;
             testPaper.difficulty_degree = this.form.difficulty_degree;
             testPaper.school_year = this.form.school_year;
             testPaper.semester = this.form.semester;
@@ -248,10 +256,10 @@ export default {
             return false;
           }
         });
-      } else if (this.total_score < 100) {
-        this.$toast.text("总分低于100，请添加题目或修改分值后重试");
+      } else if (this.total_score < this.form.total_score) {
+        this.$toast.text("总分低于设定总分，请添加题目或修改分值后重试");
       } else {
-        this.$toast.text("总分高于100，请删减题目或修改分值后重试");
+        this.$toast.text("总分高于设定总分，请删减题目或修改分值后重试");
       }
     },
 
